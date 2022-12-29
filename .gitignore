@@ -1,0 +1,6 @@
+*.ibc
+*~
+build
+*.so
+*pyc
+*.pyc

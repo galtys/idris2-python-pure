@@ -1,0 +1,1 @@
+export PATH=$PATH:$(HOME)/.idris2-pygen/bin
