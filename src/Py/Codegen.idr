@@ -23,6 +23,7 @@ import Data.Vect
 import Idris.Syntax
 import Idris.Pretty.Annotations
 import Idris.Doc.String
+import System.File
 --------------------------------------------------------------------------------
 --          Utilities
 --------------------------------------------------------------------------------
@@ -1035,8 +1036,22 @@ a2n_nt (n,a) = do
       pure (n,(EmptyFC,ret))
 -}
 
+maybeHead : List a -> Maybe a
+maybeHead [] = Nothing
+maybeHead (x :: xs) = Just x
+
+loadImport : List String -> Core (String)
+loadImport directives = do
+   case (maybeHead directives) of
+     Nothing => pure ""
+     (Just pth) => do
+         ret <- coreLift $ readFile pth
+         case ret of
+            Left ferr => pure ""
+            Right cnt => pure cnt
+
 ||| Compiles the given `ClosedTerm` for the list of supported
-||| backends to JS code.
+||| backends to Py code.
 export
 compileToES : Ref Ctxt Defs -> Ref Syn SyntaxInfo -> (cg : CG) -> ClosedTerm -> List String -> Core String
 compileToES c s cg tm ccTypes = do
@@ -1096,16 +1111,15 @@ compileToES c s cg tm ccTypes = do
 
   -- main preamble containing primops implementations
   static_preamble <- readDataFile ("py/py_support.py")
-  odoo14_preamble <- readDataFile ("py/py_odoo14.py") 
-  erp7_preamble <- readDataFile ("py/py_erp7.py")
-   
+  -- user defined preamble to import (head of direcitves is path)
+  py_preamble <- loadImport directives  
   run_main <- readDataFile ("py/run_main.py")
   --let static_preamble = ""
   -- complete preamble, including content from additional
   -- support files (if any)
-    
-  let pre = if ("odoo14" `elem` directives) then showSep "\n" $ odoo14_preamble::(static_preamble :: (values $ preamble st) ) else if ("erp7" `elem` directives) then showSep "\n" $ erp7_preamble::(static_preamble :: (values $ preamble st) )  else showSep "\n" $ (static_preamble :: (values $ preamble st) )
   
+  let pre = showSep "\n" $ static_preamble::(py_preamble :: (values $ preamble st) ) 
+    
   let after = showSep "\n" $ [run_main]
   --pure $ fastUnlines [pre,allDecls,main]
   --putStrLn main
