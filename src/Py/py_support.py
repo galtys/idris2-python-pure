@@ -6,6 +6,12 @@ import pprint
 import json
 import io
 import sys
+import hashlib
+
+
+def get_sha256_hex(a):
+    return hashlib.sha256(a).hexdigest()
+
 py_support_erased=None
 undefined=None
 UNIT=None
@@ -22,7 +28,10 @@ def pprint_obj(o):
     pprint.pprint(o,stream=out)
     return out.getvalue()
 def print_obj(o):
-    sys.stdout.write(o)
+    if isinstance(o, unicode):
+        sys.stdout.write(o.encode('utf8') )
+    else:
+        sys.stdout.write(o)
 def is_py_none(x):
     if x is None:
         return 1
@@ -97,6 +106,10 @@ def __prim_idris2js_array(x):
     return result
 def fastConcat(xs):
     return "".join(__prim_idris2js_array(xs))
+
+def hlist2pytuple(xs):
+    ret = __prim_idris2js_array(xs)
+    return tuple(ret)
 
 def py_support_fastPack(x):
     y = __prim_idris2js_array(x)

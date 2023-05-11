@@ -176,7 +176,8 @@ mutual
     constructor MkEConstAlt
     constant : Constant
     body     : Stmt (Just e)
-
+    
+  
 export
 toMinimal : Exp -> Maybe Minimal
 toMinimal (EMinimal v) = Just v

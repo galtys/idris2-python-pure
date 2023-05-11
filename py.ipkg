@@ -15,8 +15,8 @@ sourcedir = "src"
 
 depends = base >= 0.5.1
         , contrib >= 0.5.1
-	, idris2, network
-
+	, idris2
+	
 --opts = "--no-prelude"
 --opts       = "--codegen node"
 -- modules to install

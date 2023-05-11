@@ -7,6 +7,7 @@ import Core.Context.Log
 import Core.Directory
 import Core.Options
 import Data.List1
+import Data.List
 import Data.String
 import Py.Ast
 --import Compiler.ES.Doc
@@ -23,7 +24,42 @@ import Data.Vect
 import Idris.Syntax
 import Idris.Pretty.Annotations
 import Idris.Doc.String
-import System.File
+--import Data.DiGraph
+
+import Core.Name.Namespace
+
+{-
+hasNS : Name -> String -> Bool
+hasNS (NS ns  n) str = not $ isNil $ filter (==str) $ unsafeUnfoldNamespace ns
+hasNS (UN un) str = ?hasNS_rhs_1
+hasNS (MN str1 i) str = ?hasNS_rhs_2
+hasNS (PV n i) str = ?hasNS_rhs_3
+hasNS (DN str1 n) str = ?hasNS_rhs_4
+hasNS (Nested x n) str = ?hasNS_rhs_5
+hasNS (CaseBlock str1 i) str = ?hasNS_rhs_6
+hasNS (WithBlock str1 i) str = ?hasNS_rhs_7
+hasNS (Resolved i) str = ?hasNS_rhs_8
+-}
+hasNS : Name -> String -> Bool
+hasNS (NS ns  n) str = ret where
+    inp : Bool
+    inp = isInPathOf str ns
+    ret : Bool
+    ret = case inp of
+       True => True
+       False => hasNS n str
+       
+    --not $ isNil $ filter (==str) $ unsafeUnfoldNamespace ns
+hasNS (UN un) str = False
+hasNS (MN str1 i) str = False
+hasNS (PV n i) str = False
+hasNS (DN str1 n) str = hasNS n str
+hasNS (Nested x n) str = hasNS n str
+hasNS (CaseBlock str1 i) str = False
+hasNS (WithBlock str1 i) str = False
+hasNS (Resolved i) str = False
+
+
 --------------------------------------------------------------------------------
 --          Utilities
 --------------------------------------------------------------------------------
@@ -39,11 +75,12 @@ stringList = fastConcat . intersperse "," . map show
 --------------------------------------------------------------------------------
 --          JS Strings
 --------------------------------------------------------------------------------
-
--- Convert an Idris2 string to a Javascript String
--- by escaping most non-alphanumeric characters.
-convertChar : Char -> String
-convertChar c = if (c >= ' ') && (c /= '\\') && (c /= '"') && (c /= '\'') && (c <= '~')
+jsString2 : String -> String
+jsString2 s = "'" ++ (concatMap okchar (unpack s)) ++ "'"
+  where
+    okchar : Char -> String
+    okchar c = if (c >= ' ') && (c /= '\\')
+                  && (c /= '"') && (c /= '\'') && (c <= '~')
                   then cast c
                   else case c of
                             '\0' => "\\0"
@@ -51,9 +88,41 @@ convertChar c = if (c >= ' ') && (c /= '\\') && (c /= '"') && (c /= '\'') && (c 
                             '"' => "\\\""
                             '\r' => "\\r"
                             '\n' => "\\n"
-                            'A' => "A"
+                            other => "\\u{" ++ asHex (cast c) ++ "}"
+
+-- Convert an Idris2 string to a Javascript String
+-- by escaping most non-alphanumeric characters.
+pad4 : String -> String
+pad4 s = case length s of
+    0 => "0000"
+    1 => "000"++s
+    2 => "00" ++s
+    3 => "0" ++s
+    4 => s
+    _ => s
+    
+convertChar : Char -> String
+convertChar c = if (c >= ' ') && (c /= '\\') && (c /= '"') && (c /= '\'') && (c <= '~')
+                  then cast c
+                  else case c of
+                            '\0' => "\\x00"
+                            '\'' => "\\x27"                            
+                            '"' => "\\x22"
+                            '\r' => "\\r"
+                            '\n' => "\\n"
                             --other => "r"<+>"\\x" ++ asHex (cast c) 
-                            other =>  ("\\u0" ++ asHex  (cast c)) 
+                            other =>  ("\\u" ++ (pad4 $ asHex  (cast c))) 
+cnvCh : Char -> String
+cnvCh c = ret where
+   no : Int
+   no = ord c
+   code : Bits64
+   code = cast no
+   h : String
+   h = asHex code
+   ret : String
+   ret = if code < 128 then (cast c) else ("\u" ++ h)
+   
 convertChar1 : Char -> String
 convertChar1 c = #"chr(\#{num})"# where 
          num : String
@@ -61,11 +130,30 @@ convertChar1 c = #"chr(\#{num})"# where
 
 jsString : String -> String
 jsString "" = "''"
-jsString s = (concat $ intersperse "+" ds) where
+jsString s = "u'"++(concat ds) ++ "'" where
   ds : List String
-  ds = (map convertChar1 (unpack s))
+  ds = (map convertChar (unpack s))
 
+-- Convert an Idris2 string to a Javascript String
+-- by escaping most non-alphanumeric characters.
+{-
+jsString : String -> String
+jsString s = "'" ++ (concatMap okchar (unpack s)) ++ "'"
+  where
+    okchar : Char -> String
+    okchar c = if (c >= ' ') && (c /= '\\')
+                  && (c /= '"') && (c /= '\'') && (c <= '~')
+                  then cast c
+                  else case c of
+                            '\0' => "\\0"
+                            '\'' => "\\'"
+                            '"' => "\\\""
+                            '\r' => "\\r"
+                            '\n' => "\\n"
+                            other => "MUF" -- "\x" ++ asHex (cast c) ++ ""  
+                            --other => "\\u{" ++ asHex (cast c) ++ "}"
 
+-}
 --intersperse "+" (map convertChar1 (unpack s)) --"'" ++ (concatMap convertChar1 (unpack s)) ++ "'"   
 {-
   where
@@ -526,6 +614,9 @@ readCCPart = breakDrop1 ':'
 
 -- search a an FFI implementation for one of the supported
 -- backends.
+searchFBasePrelude : List String -> List String -> Either (List String) String
+--searchFBasePrelude knownBackends decls = 
+
 searchForeign : List String -> List String -> Either (List String) String
 searchForeign knownBackends decls =
   let pairs = map readCCPart decls
@@ -569,9 +660,30 @@ makeForeign n x = do
            , "Supported types are: "
            , stringList ["lambda", "support", "stringIterator"]
            ]
+{-           
+fpName : Name
+fpName = NS ns (UN (Basic "fastUnpack")) where
+   ns : Namespace
+   ns = mkNamespace "Prelude.Types"
+-}   
+fpName : String -> String -> Name
+fpName mod fn = NS ns (UN (Basic fn)) where
+   ns : Namespace
+   ns = mkNamespace mod
 
--- given a function name and list of FFI declarations, tries
--- to extract a declaration for one of the supported backends.
+addForeign : List (Name, String)
+addForeign = [(fpName "Prelude.Types" "fastConcat", "pygen:lambda: lambda xs: fastConcat(xs)")
+             ,(fpName "Prelude.Types" "fastUnpack", "pygen:lambda: lambda x:py_support_fastUnpack(x)")
+             ,(fpName "Prelude.Types" "fastPack", "pygen:lambda: lambda x:py_support_fastPack(x)")
+             ,(fpName "Prelude.IO" "prim__putStr", "pygen:lambda: lambda x,world:print_obj(x)")
+             ,(fpName "Prelude.PrimIO" "prim__nullAnyPtr", "pygen:lambda: lambda x:py_support_isNone(x)")
+             ,(fpName "System.Errno" "prim__strerror", "pygen:lambda: lambda e: os.strerror(e)")
+             ,(fpName "System.File.ReadWrite" "prim__writeLine", "pygen:lambda: lambda f,s,world: py_support_writeLine(f,s)")
+             ,(fpName "System.File.Error" "prim__fileErrno", "pygen:lambda: errno.ENOENT")
+             ,(fpName "System.File.Handle" "prim__open", "pygen:lambda: lambda f,m,world:open(f,m)")
+             ,(fpName "System.File.Handle" "prim__close", "pygen:lambda: lambda f,world:f.close()")]
+             
+
 foreignDecl :  {auto d : Ref Ctxt Defs}
             -> {auto c : Ref ESs ESSt}
             -> {auto nm : Ref NoMangleMap NoMangleMap}
@@ -580,12 +692,14 @@ foreignDecl :  {auto d : Ref Ctxt Defs}
             -> Core Doc
 foreignDecl n ccs = do
   tys <- ccTypes <$> get ESs
-  --coreLift $ putStrLn $show ccs
-  case searchForeign tys ccs of
+  let new_ccs = case List.lookup n addForeign of
+                   Nothing => ccs
+                   (Just pyg) => (pyg::ccs)
+  case searchForeign tys new_ccs of
     Right x        => makeForeign n x
     Left  backends =>
       errorConcat
-        [ "No supported backend found in the definition of", show n, ". "
+        [ "No 4supported backend found in the definition of", show n, ". "
         , "Supported backends: ", stringList tys, ". "
         , "Backends in definition: ", stringList backends, "."
         ]
@@ -731,41 +845,38 @@ insertBreak : (r : Effect) -> (Doc, Doc) -> (Doc, Doc)
 insertBreak Returns x = x
 insertBreak (ErrorWithout _) (pat, exp) = (pat, exp)--(pat, vcat [exp, "break;"])
 
+vectToList : Vect n t -> List t
+vectToList [] = []
+vectToList (x :: xs) = x::(vectToList xs)
+
 
 mutual
-  hasELamStmt : Exp -> Maybe (Int, List Var, Stmt (Just Returns))
-  hasELamStmt (ELam no xs (Return $ y@(ECon _ _ _))) = Nothing
-  hasELamStmt (ELam no xs (Return $ y)) = Nothing
-  hasELamStmt (ELam no xs y) = Just (no,xs,y)
-  hasELamStmt _ = Nothing
-
-
   -- converts an `Exp` to JS code
   exp :  {auto c : Ref ESs ESSt}
       -> {auto nm : Ref NoMangleMap NoMangleMap}
       -> Exp
       -> Core Doc
   exp (EMinimal x) = pure $ minimal !(get NoMangleMap) x
+  {-
   exp (ELam no xs (Return $ y@(ECon _ _ _))) = do
      nm <- get NoMangleMap
      map (\e => lambdaArgs nm xs <+> paren e) (exp y)
   exp (ELam no xs (Return $ y)) = do
      nm <- get NoMangleMap
      (lambdaArgs nm xs <+> ) <$> exp y
-     
+  -}
   exp el@(ELam no xs y) = do
      nm <- get NoMangleMap
      --(lambdaArgs nm xs <+>) . block <$> stmt y
      kky <- stmt y
      let lam_expr = (lambdaArgs nm xs) <+> "__closure_fun"<+>(shown no)<+>(paren (fArgs nm xs))
-         loc_fun = function ("__closure_fun"<+>(shown no)) (map (var nm) xs) (kky)
-         
-     
+     pure lam_expr
+     {-  
      case (hasELamStmt el) of
-        Nothing => pure (vcat [lam_expr,"#ISSUE_LAMBDA" ])
-        (Just (nox,xsx,yx)) => pure (vcat [lam_expr,"#ISSUE_LAMBDA"])
+        Nothing =>             pure (vcat [no_cls])
+        (Just (nox,xsx,yx)) => pure (vcat [lam_expr])
      --pure lam_expr
-         
+     -}     
   exp (EApp x xs) = do
     o    <- exp x
     args <- traverse exp xs
@@ -778,6 +889,23 @@ mutual
   exp (EPrimVal x) = pure . Text $ jsConstant x
   exp EErased = pure "py_support_erased"
 
+  hasELamStmt : Exp -> List (Int, List Var, Stmt (Just Returns))
+  --hasELamStmt (ELam no xs (Return $ y@(ECon _ _ _))) = []
+  --hasELamStmt (ELam no xs (Return $ y)) = []
+  hasELamStmt (ELam no xs y) = [ (no,xs,y) ]
+  hasELamStmt (EApp e xs) = (hasELamStmt e)++(concat $ map hasELamStmt xs)
+  hasELamStmt (EOp a xs) = (concat $ map hasELamStmt $ vectToList xs) 
+  hasELamStmt (ECon tag ci xs) = (concat $ map hasELamStmt xs)
+  hasELamStmt (EExtPrim n xs) = (concat $ map hasELamStmt xs)    
+  hasELamStmt _ = []
+  
+  cr_closure : {auto c : Ref ESs ESSt} -> {auto nm : Ref NoMangleMap NoMangleMap} ->  (Int,List Var, Stmt (Just Returns)) -> Core Doc
+  cr_closure (no,xs, y) = do 
+      nm <- get NoMangleMap
+      kky <- stmt y
+      pure $ function ("__closure_fun"<+>(shown no)) (map (var nm) xs) (kky)
+  
+
   -- converts a `Stmt e` to JS code.
   stmt :  {e : _}
        -> {auto c : Ref ESs ESSt}
@@ -789,50 +917,48 @@ mutual
     resx <- ((\e => "return" <++> e <+> "") <$> exp xe)
     --pure (vcat ["#RET1",resx])
     nm <- get NoMangleMap
-    case (hasELamStmt xe) of
-      (Just (no,xs,y)) => do
-          kky <- stmt y          
-          let loc_fun = function ("__closure_fun"<+>(shown no)) (map (var nm) xs) (kky)
-          pure (vcat ["#RET_JUST",loc_fun, resx])
-      Nothing => do
-          pure (vcat ["#RET_NOTHING", resx])
+    let xxs = hasELamStmt xe
+    loc_fns <- traverse cr_closure xxs
+    pure (vcat ["#Return", vcat loc_fns, resx])
          
   stmt (Const v x) = do
     nm <- get NoMangleMap
     resx <- (constant (var nm v) <$> exp x)
-    --pure (vcat ["#CONST",resx])
+    let xxs = hasELamStmt x
+    loc_fns <- traverse cr_closure xxs
+    pure (vcat ["#Const", vcat loc_fns, resx])
+    {-
     case (hasELamStmt x) of
-      (Just (no,xs,y)) => do
-          kky <- stmt y          
-          let loc_fun = function ("__closure_fun"<+>(shown no)) (map (var nm) xs) (kky)
-          pure (vcat ["#CONST_JUST",loc_fun, resx])
-      Nothing => do
-          pure (vcat ["#CONST_NOTHING", resx])
-    
+      ((no,xs,y)::[]) => do
+          loc_fun <- cr_closure (no,xs,y)          
+          pure (vcat ["#CONST",loc_fun, resx])
+      xxs => do
+          pure (vcat ["#CONST", resx])
+    -}
   stmt (Declare v s) = do
     nm <- get NoMangleMap
-    --(\d => vcat ["let" <++> var nm v <+> ";",d]) <$> stmt s
     (\d => vcat [var nm v <+> "=None",d]) <$> stmt s
   stmt (Assign v x) = do
     nm <- get NoMangleMap
     let res_e = (\d => hcat [var nm v,softEq,d]) <$> exp x
-    resx <- res_e  
-    --pure (vcat ["#ASSIGN_X", resx])
-    
+    resx <- res_e      
+    let xxs = hasELamStmt x
+    loc_fns <- traverse cr_closure xxs
+    pure (vcat ["#Assign", vcat loc_fns, resx])
+    {-
     case (hasELamStmt x) of
-      (Just (no,xs,y)) => do
-          kky <- stmt y          
-          let loc_fun = function ("__closure_fun"<+>(shown no)) (map (var nm) xs) (kky)
+      ((no,xs,y)::[]) => do
+          loc_fun <- cr_closure (no,xs,y)          
           pure (vcat ["#ASSIGN1",loc_fun, resx])
-      Nothing => do
+      xxs => do
           pure (vcat ["#ASSIGN2", resx])
-    
+    -}
   stmt (ConSwitch r sc alts def) = do
     as <- traverse (map (insertBreak r) . alt) alts
     d  <- traverseOpt stmt def
     nm <- get NoMangleMap
     --pure $ switch (minimal nm sc <+> ".h") as d
-    pure $ switch (minimal nm sc <+> ".get('h_x')") as d
+    pure (switch (minimal nm sc <+> ".get('h_x')") as d)
     where
         alt : {r : _} -> EConAlt r -> Core (Doc,Doc)
         alt (MkEConAlt _ RECORD b)  = ("undefined",) <$> stmt b
@@ -847,7 +973,12 @@ mutual
     as <- traverse (map (insertBreak r) . alt) alts
     d  <- traverseOpt stmt def
     ex <- exp sc
-    pure $ switch ex as d
+    --let xxs = hasELamStmt sc
+    loc_fns <- traverse cr_closure (hasELamStmt sc)
+    
+    --loc_fns <- traverse cr_closure xxs
+    
+    pure $ vcat [vcat loc_fns, (switch ex as d) ]
     where
         alt : EConstAlt r -> Core (Doc,Doc)
         alt (MkEConstAlt c b) = do
@@ -958,100 +1089,155 @@ avar2ce fc a = NmRef fc (avar2name a)
 aop_vect : {arity:Nat} -> FC -> PrimFn arity -> Vect arity NamedCExp -> NamedCExp
 aop_vect {arity} fc op args = NmOp fc op args
 
---avar2ce_no_fc : AVar -> NamedCExp
-{-
+functions2 :  List (Name,FC,NamedDef)
+              -> List Function
+functions2 dfs =
+  let ts     = mapMaybe def dfs
+      --groups = tailCallGroups ts
+      --names  = SortedSet.fromList $ concatMap (keys . functions) groups
+   in ts -- tailRecOptim groups names loop ts
+   where def : (Name,FC,NamedDef) -> Maybe Function --(Name,List Name,NamedCExp)
+         def (n,_,MkNmFun args x) = Just $ MkFunction n args x
+         def _                    = Nothing
+{-         
+namedCExpDeps : NamedCExp -> List Name
+namedCExpDeps (NmLocal fc n) = []
+namedCExpDeps (NmRef fc n) = [n]
+namedCExpDeps (NmLam fc x y) = namedCExpDeps y
+namedCExpDeps (NmLet fc x y z) = namedCExpDeps y 
+namedCExpDeps (NmApp fc x xs) = namedCExpDeps x
+namedCExpDeps (NmCon fc n x tag xs) = []
+namedCExpDeps (NmOp fc f xs) = []
+namedCExpDeps (NmExtPrim fc p xs) = []
+namedCExpDeps (NmForce fc lz x) = namedCExpDeps x
+namedCExpDeps (NmDelay fc lz x) = namedCExpDeps x
+namedCExpDeps (NmConCase fc sc xs x) = []
+namedCExpDeps (NmConstCase fc sc xs x) = []
+namedCExpDeps (NmPrimVal fc cst) = []
+namedCExpDeps (NmErased fc) = []
+namedCExpDeps (NmCrash fc str) = []
+-}
+public export
+interface ListDeps a where
+   constructor MkLD
+   listDeps : a -> List Name
+   
 mutual
-  a2n_m : Maybe ANF -> Core (Maybe NamedCExp)
-  a2n_m Nothing = pure Nothing
-  a2n_m (Just a) = do
-     ret <- a2n a
-     pure $ Just ret
+  export
+  ListDeps NamedCExp where
+      listDeps (NmLocal fc n) = pure n
+      listDeps (NmRef fc n) = pure n
+      listDeps (NmLam fc x y) = listDeps y
+      listDeps (NmLet fc x y z) = (listDeps y) ++ (listDeps z)
+      listDeps (NmApp fc x xs) = (listDeps x) ++ ( concat $ map listDeps xs)
+      listDeps (NmCon fc n x tag xs) = (pure n) ++ ( concat $ map listDeps xs)
+      listDeps (NmOp fc f xs) = []
+      listDeps (NmExtPrim fc p xs) = ( concat $ map listDeps xs)
+      listDeps (NmForce fc lz x) = listDeps x
+      listDeps (NmDelay fc lz x) = listDeps x
+      listDeps (NmConCase fc sc xs Nothing) = (listDeps sc) ++ ( concat $ map listDeps xs)
+      listDeps (NmConCase fc sc xs (Just x) ) = (listDeps sc) ++ ( concat $ map listDeps xs) ++ (listDeps x)
+            
+      listDeps (NmConstCase fc sc xs Nothing) = (listDeps sc) ++ ( concat $ map listDeps xs)
+      listDeps (NmConstCase fc sc xs (Just x)) = (listDeps sc) ++ ( concat $ map listDeps xs) ++ (listDeps x)
+            
+      listDeps (NmPrimVal fc cst) = []
+      listDeps (NmErased fc) = []
+      listDeps (NmCrash fc str) = []
+  export
+  ListDeps NamedConAlt where
+      listDeps (MkNConAlt n x tag args y) = listDeps y
+  export
+  ListDeps NamedConstAlt where
+      listDeps (MkNConstAlt cst x) = listDeps x     
+
+
+{-
+public export
+interface ShowX t where
+  show : t -> String
   
-  
-  a2n : ANF -> Core NamedCExp
-  a2n (AV fc v) = pure (avar2ce fc v)
-  a2n (AAppName fc Nothing n args) = pure (NmApp fc (name2ce fc n) (map (avar2ce fc) args)) 
-  a2n (AAppName fc (Just lazy) n args) = pure $ NmDelay fc lazy (NmApp fc (name2ce fc n) (map (avar2ce fc) args)) 
+mutual
+  export
+  ShowX NamedCExp where
+    show (NmLocal _ x) = "!" ++ show x
+    show (NmRef _ x) = show x
+    show (NmLam _ x y) = "(%lam " ++ show x ++ " " ++ Codegen.show y ++ "%lam)"
+    show (NmLet _ x y z) = "(%let " ++ show x ++ " " ++ Codegen.show y ++ " " ++ Codegen.show z ++ "let)"
+    show (NmApp _ x xs)
+        = assert_total $ "(APP" ++ Codegen.show x ++ " " ++ show xs ++ "APP)"
+    show (NmCon _ x ci tag xs)
+        = assert_total $ "(%con " ++ showFlag ci ++ show x ++ " " ++ show tag ++ " " ++ show xs ++ "%con)"
+      where
+        showFlag : ConInfo -> String
+        showFlag DATACON = ""
+        showFlag f = show f ++ " "
+    show (NmOp _ op xs)
+        = assert_total $ "(%Op" ++ show op ++ " " ++ show xs ++ "%Op)"
+    show (NmExtPrim _ p xs)
+        = assert_total $ "(%extern " ++ show p ++ " " ++ show xs ++ "%extern)"
+    show (NmForce _ lr x) = "(%force " ++ show lr ++ " " ++ Codegen.show x ++ "%force)"
+    show (NmDelay _ lr x) = "(%delay " ++ show lr ++ " " ++ Codegen.show x ++ "%delay)"
+    show (NmConCase _ sc xs def)
+        = assert_total $ "(%case " ++ Codegen.show sc ++ " " ++ show xs ++ " " ++ show def ++ "%case)"
+    show (NmConstCase _ sc xs def)
+        = assert_total $ "(%caseC " ++ Codegen.show sc ++ " " ++ show xs ++ " " ++ show def ++ "%caseC)"
+    show (NmPrimVal _ x) = show x
+    show (NmErased _) = "___"
+    show (NmCrash _ x) = "(CRASH " ++ show x ++ "CRASH)"
 
-  a2n (AUnderApp fc n m args) = pure  (NmApp fc (name2ce fc n) (map (avar2ce fc) args) ) --Name,Nat,List AVar
+  export
+  ShowX NamedConAlt where
+    show (MkNConAlt x ci tag args exp)
+         = "(%concase " ++ showFlag ci ++ show x ++ " " ++ show tag ++ " " ++
+             show args ++ " " ++ Codegen.show exp ++ "%concase)"
+      where
+        showFlag : ConInfo -> String
+        showFlag DATACON = ""
+        showFlag f = show f ++ " "
 
-  a2n (AApp fc Nothing c arg) = pure (NmApp fc  (avar2ce fc c) [(avar2ce fc arg)])
-  a2n (AApp fc (Just lazy) c arg) = pure $ NmDelay fc lazy (NmApp fc  (avar2ce fc c) [(avar2ce fc arg)])
-
-  a2n (ALet fc x val sc) = do
-       ret_val <- a2n val
-       ret_sc <- a2n sc
-       pure (NmLet fc (int2name x) (ret_val) (ret_sc))
-  a2n (ACon fc n ci t args) = pure (NmCon fc n ci t (map (avar2ce fc) args))
-  a2n (AOp {arity} fc Nothing op args) = ?kocour2 --pure (NmOp fc op  (map (avar2ce fc) args))
-  a2n (AOp fc (Just lazy) op args) = ?kocour1--pure $ NmDelay fc lazy (NmOp fc op  (map (avar2ce fc) args))
-
-  a2n (AExtPrim fc Nothing p args) = pure (NmExtPrim fc p (map (avar2ce fc) args)) 
-  a2n (AExtPrim fc (Just lazy) p args) = pure $ NmDelay fc lazy (NmExtPrim fc p (map (avar2ce fc) args)) 
-
-  a2n (AConCase fc sc alts def) = do
-      let nm_sc = avar2ce EmptyFC sc
-      ret <- traverse conalt alts
-      nm_def <- a2n_m def
-      pure $ NmConCase fc nm_sc ret nm_def
-       
-  a2n (AConstCase fc sc alts def) = do
-      let nm_sc = avar2ce EmptyFC sc
-      ret <- traverse constalt alts
-      nm_def <- a2n_m def
-      pure $ NmConstCase fc nm_sc ret nm_def
-      
-  a2n (APrimVal fc x) = pure (NmPrimVal fc x)
-  a2n (AErased fc) = pure (NmErased fc)
-  a2n (ACrash fc x) = pure (NmCrash fc x)
-
-  conalt : AConAlt -> Core NamedConAlt
-  conalt (MkAConAlt n ci tag args e) = do
-      ret <- a2n e
-      let args_ret = (map ((name2ce EmptyFC) . int2name) args)
-      pure $ MkNConAlt n ci tag [] (ret) 
-  
-  constalt : AConstAlt -> Core NamedConstAlt
-  constalt (MkAConstAlt c e) = do
-      ret <- a2n e
-      pure $ MkNConstAlt c ret
-
-
-
-anf2named : ANFDef -> Core NamedDef
-anf2named (MkAFun xs a) = do
-   ret <- a2n a
-   pure $ MkNmFun (map int2name xs) (ret) 
-anf2named (MkACon tag arity nt) = pure $ MkNmCon tag arity nt
-anf2named (MkAForeign css fargs ct) = pure $ MkNmForeign css fargs ct
-anf2named (MkAError e) = do
-   ret <- a2n e
-   pure$ MkNmError (ret)
-
-
-a2n_nt : (Name,ANFDef) -> Core (Name,(FC,NamedDef))
-a2n_nt (n,a) = do
-      coreLift $ printLn n
-      ret <- anf2named a
-      pure (n,(EmptyFC,ret))
+  export
+  ShowX NamedConstAlt where
+    show (MkNConstAlt x exp)
+         = "(%constcase " ++ show x ++ " " ++ Codegen.show exp ++ "%constcase)"
 -}
 
-maybeHead : List a -> Maybe a
-maybeHead [] = Nothing
-maybeHead (x :: xs) = Just x
+isMN : Name -> Bool
+isMN (NS mi n) = False
+isMN (UN un) = False
+isMN (MN str i) = True
+isMN (PV n i) = False
+isMN (DN str n) = False
+isMN (Nested x n) = False
+isMN (CaseBlock str i) = False
+isMN (WithBlock str i) = False
+isMN (Resolved i) = False
 
-loadImport : List String -> Core (String)
-loadImport directives = do
-   case (maybeHead directives) of
-     Nothing => pure ""
-     (Just pth) => do
-         ret <- coreLift $ readFile pth
-         case ret of
-            Left ferr => pure ""
-            Right cnt => pure cnt
-
+showFunctionArgs : Function -> Core ()
+showFunctionArgs (MkFunction name args body) = do
+   pure ()
+   
+   coreLift $ putStrLn $ "************************* " ++ (show name) ++ " ***********************************************"
+   coreLift $ putStrLn $ (show name) ++ " " ++ (Prelude.show (map Prelude.show $ listDeps body) )
+   --coreLift $ putStrLn $ (show name) --++ " " ++ (Prelude.show (map Prelude.show $ listDeps body) )
+   {-
+   case args of
+     [] => case (isMN name) of
+            True => pure () --coreLift $ putStrLn $ (show name)
+            False => pure ()
+     xs => coreLift $ putStrLn $ show (map (show . isMN) xs)
+   -}   
+--   coreLift $ putStrLn $ Codegen.show body
+   
+   {-
+   case (hasNS name "ErpMethod") of
+      True => do
+          coreLift $ putStrLn $ (show name) ++ " " ++ (show (map show args) )
+          coreLift $ putStrLn $ show body
+      False => pure ()
+   -}
 ||| Compiles the given `ClosedTerm` for the list of supported
-||| backends to Py code.
+||| backends to JS code.
 export
 compileToES : Ref Ctxt Defs -> Ref Syn SyntaxInfo -> (cg : CG) -> ClosedTerm -> List String -> Core String
 compileToES c s cg tm ccTypes = do
@@ -1059,17 +1245,10 @@ compileToES c s cg tm ccTypes = do
   _ <- initNoMangle ["pygen"] validJSName
 
   cdata      <- getCompileData False Cases tm
-  --cdata_anf  <- getCompileData False ANF tm
-  
-  --show_anf (anf cdata_anf)
-  
-  --from_anf <- traverse a2n_nt (anf cdata_anf)
   
   -- read a derive the codegen mode to use from
   -- user defined directives for the
   directives <- getDirectives cg
-  coreLift $ putStrLn $show directives
-  
   let mode = Pretty
   {-
   let mode = if "minimal" `elem` directives then Minimal
@@ -1086,11 +1265,14 @@ compileToES c s cg tm ccTypes = do
   -- the list of all toplevel definitions (including the main
   -- function)
   let allDefs =  (mainExpr, EmptyFC, MkNmFun [] $ forget cdata.mainExpr)
-              :: cdata.namedDefs --from_anf --cdata.namedDefs
+              :: cdata.namedDefs 
 
       -- tail-call optimized set of toplevel functions
       defs    = TailRec.functions tailRec allDefs
-
+      --defs    = functions2  allDefs
+      --defs = allDefs
+  --traverse_ showFunctionArgs defs
+  
   -- pretty printed toplevel function definitions
   defDecls <- traverse def defs
 
@@ -1111,15 +1293,16 @@ compileToES c s cg tm ccTypes = do
 
   -- main preamble containing primops implementations
   static_preamble <- readDataFile ("py/py_support.py")
-  -- user defined preamble to import (head of direcitves is path)
-  py_preamble <- loadImport directives  
+  odoo14_preamble <- readDataFile ("py/py_odoo14.py") 
+  erp7_preamble <- readDataFile ("py/py_erp7.py")
+   
   run_main <- readDataFile ("py/run_main.py")
   --let static_preamble = ""
   -- complete preamble, including content from additional
   -- support files (if any)
-  
-  let pre = showSep "\n" $ static_preamble::(py_preamble :: (values $ preamble st) ) 
     
+  let pre = if ("odoo14" `elem` directives) then showSep "\n" $ odoo14_preamble::(static_preamble :: (values $ preamble st) ) else if ("erp7" `elem` directives) then showSep "\n" $ erp7_preamble::(static_preamble :: (values $ preamble st) )  else showSep "\n" $ (static_preamble :: (values $ preamble st) )
+  
   let after = showSep "\n" $ [run_main]
   --pure $ fastUnlines [pre,allDecls,main]
   --putStrLn main
