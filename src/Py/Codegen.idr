@@ -1242,9 +1242,10 @@ export
 compileToES : Ref Ctxt Defs -> Ref Syn SyntaxInfo -> (cg : CG) -> ClosedTerm -> List String -> Core String
 compileToES c s cg tm ccTypes = do
   --pure ("")
-  _ <- initNoMangle ["pygen"] validJSName
+  _ <- initNoMangle ccTypes validJSName
 
-  cdata      <- getCompileData False Cases tm
+  --cdata      <- getCompileData False Cases tm
+  cdata <- getCompileDataWith ccTypes False Cases tm
   
   -- read a derive the codegen mode to use from
   -- user defined directives for the
@@ -1271,7 +1272,7 @@ compileToES c s cg tm ccTypes = do
       defs    = TailRec.functions tailRec allDefs
       --defs    = functions2  allDefs
       --defs = allDefs
-  --traverse_ showFunctionArgs defs
+  traverse_ showFunctionArgs defs
   
   -- pretty printed toplevel function definitions
   defDecls <- traverse def defs
