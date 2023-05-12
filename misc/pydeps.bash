@@ -62,5 +62,11 @@ git checkout fa0ba6c6b9e940d917159a3ab1a1d9a42171935e
 "$PYBACKEND" --install json.ipkg
 popd
 
+pushd "$CLONES_DIR/idris2-python-pure"
+rm -rf build
+#git checkout fa0ba6c6b9e940d917159a3ab1a1d9a42171935e
+"$PYBACKEND" --install py_doc.ipkg
+popd
+
 
 
