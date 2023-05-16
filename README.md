@@ -6,20 +6,25 @@ This is still an experimental, pure python backend for the idris2 compiler based
 
 In order to build it, you must have the selfhosted version of idris2 and idris2api build and installed. 
 
-The proven way is to setup an idris2 environment via a nix flake. Just go to the idris2 development directory and run `nix develop`. Then make sure that idris2 executable is in your search path.
+The proven way is to build it via pack:
 
-After compiling the backend, you will need to use it to compile and install `prelude_pygen` and `base_pygen` packages found in the `libs` directory. They have been modified to support `pygen` ffi.
+`pack build py.ipkg`
 
+In the misc folder, there is a bash script that you can adapt to install additional packages (including prelude,base ..). At the moment, the prefix of he backend points to .idris2-pygen
 
 # Background
 
-The purpose of this project wasn't to build the python bakcend but to learn how idris2 works under the hood. But eventually, I was able to adapt the javascript backend and with some tweaks, it actually generates python code. Currently, the generated code is inefficient (look at how it represents utf8 characters). 
+The purpose of this project wasn't to build the python bakcend but to learn how idris2 works under the hood. But eventually, I was able to adapt the javascript backend and with some tweaks, it actually generates python code. 
 
-I know there is another python backend based on refc, however I have realised that having a pure python version is quite neat as there is just one garbage collector and for my purposes,  pure python ffi has its own benefits too.
+I know there is another python backend based on refc, however , I believe the used case for the pure python version is that there just one garbage collector and for my purposes,  pure python ffi has its own benefits too.
+
+# Next step
+
+In the next iteration, the --directive will take a name of a support_file without the py extension. This can be usefull if you need to bundle the result with this extra support file. 
 
 # TODO:
+
 - tests
-- utf8
 - lazy support
 - generate better code for case expressions
 - get rid of comments in the generated code
