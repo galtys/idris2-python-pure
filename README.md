@@ -12,6 +12,8 @@ The proven way is to build it via pack:
 
 In the misc folder, there is a bash script that you can adapt to install additional packages (including prelude,base ..). At the moment, the prefix of he backend points to .idris2-pygen
 
+At the moment, the installation of the support file (in Py/py_support.py and Py/run_main.py ) is manual. 
+
 # Background
 
 The purpose of this project wasn't to build the python bakcend but to learn how idris2 works under the hood. But eventually, I was able to adapt the javascript backend and with some tweaks, it actually generates python code. 
@@ -19,6 +21,8 @@ The purpose of this project wasn't to build the python bakcend but to learn how 
 I know there is another python backend based on refc, however , I believe the used case for the pure python version is that there just one garbage collector and for my purposes,  pure python ffi has its own benefits too.
 
 # Next step
+
+Add the option to install the default support files to the Makefile.
 
 In the next iteration, the --directive will take a name of a support_file without the py extension. This can be usefull if you need to bundle the result with this extra support file. 
 
