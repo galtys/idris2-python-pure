@@ -33,9 +33,8 @@ import Libraries.Utils.Term
 import Yaffle.Main
 
 %default covering
-yprefix_pygen : String
-yprefix_pygen = "/home/jan/.idris2-pygen"
 
+{-
 findInput : List CLOpt -> Maybe String
 findInput [] = Nothing
 findInput (InputFile f :: fs) = Just f
@@ -266,3 +265,4 @@ mainWithCodegens cgs = do
       (\err : Error => do putStrLn ("Uncaught error: " ++ show err)
                           exitWith (ExitFailure 1))
       (\res => pure ())
+-}

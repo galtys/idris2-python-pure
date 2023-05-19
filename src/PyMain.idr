@@ -2,7 +2,7 @@ module PyMain
 
 import Core.Context
 import Compiler.Common
-import Py.Driver
+import Idris.Driver
 import Idris.Syntax
 import Idris.Env
 --import Compiler.ES.Codegen

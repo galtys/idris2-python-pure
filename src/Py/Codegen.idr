@@ -1066,10 +1066,10 @@ py_preamble = """
 show_anf : List (Name,ANFDef) -> Core ()
 show_anf [] = pure ()
 show_anf (x::xs) = do
-    coreLift $ putStrLn "\n"
+    --coreLift $ putStrLn "\n"
     let (name,df) = x
-    coreLift $ printLn name
-    coreLift $ printLn df
+    --coreLift $ printLn name
+    --coreLift $ printLn df
     ret <- show_anf xs
     pure ()
 
@@ -1272,7 +1272,7 @@ compileToES c s cg tm ccTypes = do
       defs    = TailRec.functions tailRec allDefs
       --defs    = functions2  allDefs
       --defs = allDefs
-  traverse_ showFunctionArgs defs
+  --traverse_ showFunctionArgs defs
   
   -- pretty printed toplevel function definitions
   defDecls <- traverse def defs
