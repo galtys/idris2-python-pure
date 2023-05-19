@@ -1,0 +1,1009 @@
+algebra
+  Brief        : Lawful algebraic structures
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-algebra
+  Commit       : 1172ed5b4848c5e18f7bf5f9bb467bc3e1f6b7e9
+  ipkg File    : algebra.ipkg
+  Test File    : test/test.ipkg
+  Library      : installed
+  Dependencies : base
+
+ansi
+  Brief        : ANSI terminal escape sequences
+  Type         : Git project
+  URL          : https://github.com/idris-community/idris2-ansi
+  Commit       : f3cac49b50561c0182ce2d7d9bdc4de8000f5a3e
+  ipkg File    : ansi.ipkg
+  Library      : not installed
+  Dependencies : base
+
+apache-mime-types
+  Brief        : Mime types db based on Apache HTTPD dataset
+  Type         : Git project
+  URL          : https://github.com/kbertalan/idris2-apache-mime-types
+  Commit       : 973de0e7224a25606eca25a1caf853b83925d36d
+  ipkg File    : apache-mime-types.ipkg
+  Library      : not installed
+  Dependencies :
+
+barbies
+  Brief        : Barbies: Data types that can change their clothes
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-barbies
+  Commit       : 2a0c0634db86fc9db9f7729127d4de9228cf4bdc
+  ipkg File    : barbies.ipkg
+  Library      : not installed
+  Dependencies : elab-util
+
+base
+  Type         : Idris core package
+  Library      : installed
+  Dependencies :
+
+bounded-doubles
+  Brief        : Doubles with type-level bounds
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-bounded-doubles
+  Commit       : 54162ac158fc2ddf89f70b7069c2930f503530a2
+  ipkg File    : bounded-doubles.ipkg
+  Test File    : tests/library-tests.ipkg
+  Library      : not installed
+  Dependencies :
+
+bounded-doubles-hedgehog-generators
+  Brief        : Hedgehog generators for bounded doubles
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-bounded-doubles
+  Commit       : 54162ac158fc2ddf89f70b7069c2930f503530a2
+  ipkg File    : hedgehog-generators.ipkg
+  Test File    : tests/generators-tests.ipkg
+  Library      : not installed
+  Dependencies : hedgehog
+                 bounded-doubles
+
+bytestring
+  Brief        : Immutable byte vectors for Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-bytestring
+  Commit       : 32d04ab1ca362cb110bc5824d75559457b41f6ad
+  ipkg File    : bytestring.ipkg
+  Library      : not installed
+  Dependencies : base
+                 algebra
+                 network
+
+cheerio
+  Brief        : A cheerio binding for nodejs. provide css selector and attr getter.
+  Type         : Git project
+  URL          : https://github.com/running-grass/idris2-playground
+  Commit       : 0dacfd81b49749d68a5fd905e95c860fdab072ab
+  ipkg File    : cheerio/cheerio.ipkg
+  Library      : not installed
+  Executable   : cheerio
+  App          : not installed
+  Dependencies : base
+                 contrib
+
+collie
+  Type         : Git project
+  URL          : https://github.com/ohad/collie
+  Commit       : 46bff04a8d9a1598fec9b19f515541df16dc64ef
+  ipkg File    : collie.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+comonad
+  Brief        : Comonads for Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-comonad
+  Commit       : 38f4b26f6a7b58f173ab1924486e887d40042ddd
+  ipkg File    : comonad.ipkg
+  Library      : not installed
+  Dependencies : base
+
+contrib
+  Type         : Idris core package
+  Library      : installed
+  Dependencies :
+
+coop
+  Brief        : A library for simple concurrency without parallelism
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-coop
+  Commit       : eec20769190da350e32288db59972261881ecdd5
+  ipkg File    : coop.ipkg
+  Test File    : tests/tests.ipkg
+  Library      : not installed
+  Dependencies : mtl-tuple-impls
+                 tailrec
+                 time-for-sleep
+
+crypt
+  Brief        : FFI bindings to the crypt C-library used for passphrase hashing
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-crypt
+  Commit       : 63f68a007a059831b340ad39e45528b329d383fb
+  ipkg File    : crypt.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : base
+
+dinwiddy
+  Type         : Git project
+  URL          : https://github.com/bobbbay/dinwiddy
+  Commit       : 61a81c55e48e4b7b551fb7493d623cb7659a37ce
+  ipkg File    : dinwiddy.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+distribution
+  Brief        : An FFI for statistical distributions from the GSL C library.
+  Type         : Git project
+  URL          : https://github.com/idris-bayes/distribution
+  Commit       : bced45ab5367184c8a4d88ce695c9a4714c34c98
+  ipkg File    : distribution.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+dom
+  Brief        : Extensive DOM and web bindings for Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-dom
+  Commit       : 9b68ee497679cd1a7f085f22901506a62f33f13f
+  ipkg File    : dom.ipkg
+  Library      : installed
+  Dependencies : base
+                 js
+                 elab-util
+
+dot-gv
+  Brief        : Idris2 lexer and parser for the DOT language used in GraphViz files.
+  Type         : Git project
+  URL          : https://github.com/CodingCellist/idris2-dot-parse
+  Commit       : 74a149e0c351f85a68e9789a3b7aa922a36e6e16
+  ipkg File    : dot-parse.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+eff
+  Brief        : Extensible, stack-safe effects in Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-eff
+  Commit       : 51a0bf19d7eeebda3706d8562d32127bf8108559
+  ipkg File    : eff.ipkg
+  Library      : not installed
+  Dependencies : prelude
+                 base
+                 tailrec
+                 freer
+
+effect
+  Type         : Git project
+  URL          : https://github.com/Russoul/Idris2-Effect
+  Commit       : b76dce14b79a5f743243a294c3474c6f113f8e3a
+  ipkg File    : effect.ipkg
+  Library      : not installed
+  Dependencies :
+
+elab-pretty
+  Brief        : Pretty printing TTImp and friends, plus auto-deriving pretty printers
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-elab-util
+  Commit       : 966a2f87c92b043d54b3710d3e86ad3667a8d615
+  ipkg File    : elab-pretty.ipkg
+  Library      : not installed
+  Dependencies : elab-util
+                 prettier
+
+elab-util
+  Brief        : Utilities and documentation for working with elaborator reflection
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-elab-util
+  Commit       : 966a2f87c92b043d54b3710d3e86ad3667a8d615
+  ipkg File    : elab-util.ipkg
+  Library      : installed
+  Dependencies : base
+
+filepath
+  Brief        : Unix style file paths
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-filepath
+  Commit       : 4f25bf8009cd826d08a55e0e021de83099e107f0
+  ipkg File    : filepath.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : base
+
+finite
+  Brief        : A derivable interface for types with a finite number of inhabitants
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-finite
+  Commit       : 5d9a9de5466030f3ffc5a0c2ad4ef647bc882a30
+  ipkg File    : finite.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : base
+                 elab-util
+
+fix-whitespace
+  Brief        : A small app for fixing whitespace issues in source files
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris-fix-whitespace
+  Commit       : 9e719d201ceea41cc953e803bbf848f8ed03e2fe
+  ipkg File    : fix-whitespace.ipkg
+  Library      : not installed
+  Executable   : fix_whitespace
+  App          : not installed
+  Dependencies : base
+                 filepath
+                 getopts
+                 elab-util
+                 elab-pretty
+
+free
+  Brief        : An encoding of free monads and free monad transformers
+  Type         : Git project
+  URL          : https://github.com/idris-bayes/free
+  Commit       : 809e1450094eab85a64f926967f8b056402291d6
+  ipkg File    : free.ipkg
+  Library      : not installed
+  Dependencies :
+
+freer
+  Brief        : Stack-safe freer monads for Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-freer
+  Commit       : 481c19535a020166d9babd5f5156161e4dbce4ba
+  ipkg File    : freer.ipkg
+  Library      : not installed
+  Dependencies : base
+                 tailrec
+
+fvect
+  Type         : Git project
+  URL          : https://github.com/mattpolzin/idris-fvect
+  Commit       : d84969fce38ff8a10b9d261458f4d495e6e0f1ca
+  ipkg File    : fvect.ipkg
+  Library      : not installed
+  Dependencies :
+
+game-2048
+  Type         : Git project
+  URL          : https://github.com/running-grass/idris2-playground
+  Commit       : 0dacfd81b49749d68a5fd905e95c860fdab072ab
+  ipkg File    : game-2048/game-2048.ipkg
+  Library      : not installed
+  Executable   : game-2048
+  App          : not installed
+  Dependencies : base
+                 contrib
+                 matrix
+
+getopts
+  Brief        : Processing command line options
+  Type         : Git project
+  URL          : https://github.com/idris-community/idris2-getopts
+  Commit       : 9fccb8f31c0ae18f4e07c81f110192a0e2b6e0bb
+  ipkg File    : getopts.ipkg
+  Library      : not installed
+  Dependencies : base
+
+golden-runner-helper
+  Brief        : An easy way to create `pack`-friendly runners of golden tests
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-golden-runner-helper
+  Commit       : e1c056e212a4f0e22b37c65177c2586b9efed67e
+  ipkg File    : golden-runner-helper.ipkg
+  Test File    : tests/tests.ipkg
+  Library      : not installed
+  Dependencies : test
+
+graph
+  Brief        : Sparse, simple functional graphs in Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-graph
+  Commit       : 72eb03d416522b9a476e7a010b03e77dc85437d8
+  ipkg File    : graph.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : base
+                 algebra
+
+hashable
+  Type         : Git project
+  URL          : https://github.com/Z-snails/Idris2-hashable
+  Commit       : 5615bd4627fedcb6122e902ea3d4d18575459ceb
+  ipkg File    : hashable.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+hashmap
+  Type         : Git project
+  URL          : https://github.com/Z-snails/idris2-hashmap
+  Commit       : 58f5a2d2c0a7bb082666d6ce668ee242185a52bf
+  ipkg File    : hashmap.ipkg
+  Library      : not installed
+  Dependencies : hashable
+
+hedgehog
+  Brief        : A property based testing library with integrated shrinking
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-hedgehog
+  Commit       : a071ce8708d4f4e59455669c79885b6ddc6e41b9
+  ipkg File    : hedgehog.ipkg
+  Library      : not installed
+  Dependencies : base
+                 ansi
+                 elab-pretty
+                 elab-util
+                 getopts
+                 prettier-ansi
+                 pretty-show
+                 sop
+
+idrall
+  Brief        : Dhall compiler for Idris2
+  Type         : Git project
+  URL          : https://github.com/alexhumphreys/idrall
+  Commit       : 62a455894b1db5134c8b56d31aadb31d483a4b2c
+  ipkg File    : idrall.ipkg
+  Library      : not installed
+  Dependencies : base
+                 contrib
+
+idris2
+  Type         : Idris core package
+  Library      : installed
+  Dependencies : network
+
+idris2-go
+  Brief        : Idris2 with Go backend
+  Type         : Git project
+  URL          : https://github.com/kbertalan/idris2-go
+  Commit       : 657fa76b41f2a5990138b9202dc3c7d07e8c0bc8
+  ipkg File    : idris2-go.ipkg
+  Library      : not installed
+  Executable   : idris2-go
+  App          : not installed
+  Dependencies : idris2
+
+idris2-go-lib
+  Brief        : Library for generating Go source code
+  Type         : Git project
+  URL          : https://github.com/kbertalan/idris2-go
+  Commit       : 657fa76b41f2a5990138b9202dc3c7d07e8c0bc8
+  ipkg File    : idris2-go-lib.ipkg
+  Test File    : tests/libtests.ipkg
+  Library      : not installed
+  Dependencies :
+
+idrisGL
+  Type         : Git project
+  URL          : https://github.com/ECburx/Idris2GL
+  Commit       : 3ed89f3116569260d766d14908cba9debbcea9ff
+  ipkg File    : idrisGL.ipkg
+  Library      : not installed
+  Dependencies :
+
+if-unsolved-implicit
+  Brief        : An interface helping to set a value to an implicit when it is unsolved
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-if-unsolved-implicit
+  Commit       : ca68ca72da60f538beb315c424091f4708a114c5
+  ipkg File    : if-unsolved-implicit.ipkg
+  Test File    : tests/tests.ipkg
+  Library      : not installed
+  Dependencies :
+
+indexed
+  Type         : Git project
+  URL          : https://github.com/mattpolzin/idris-indexed
+  Commit       : 6a10e418ef2dcdef66f8de7ee9e29edd1aa7c179
+  ipkg File    : indexed.ipkg
+  Library      : not installed
+  Dependencies :
+
+js
+  Brief        : Utilities for working with the JavaScript backends
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-dom
+  Commit       : 9b68ee497679cd1a7f085f22901506a62f33f13f
+  ipkg File    : js/js.ipkg
+  Library      : installed
+  Dependencies : base
+                 elab-util
+                 quantifiers-extra
+
+json
+  Brief        : Derivable JSON marshallers for Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-json
+  Commit       : fa0ba6c6b9e940d917159a3ab1a1d9a42171935e
+  ipkg File    : json.ipkg
+  Test File    : test/test.ipkg
+  Library      : installed
+  Dependencies : base
+                 parser
+                 elab-util
+                 parser-json
+
+json-simple
+  Brief        : Simplified derivable JSON marshallers for simple people like me
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-json
+  Commit       : fa0ba6c6b9e940d917159a3ab1a1d9a42171935e
+  ipkg File    : simple/json-simple.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : base
+                 elab-util
+                 parser-json
+
+katla
+  Type         : Git project
+  URL          : https://github.com/idris-community/katla
+  Commit       : 6897c710c970f2177eb86ee2c88084ef5c0ea21c
+  ipkg File    : katla.ipkg
+  Library      : not installed
+  Executable   : katla
+  App          : not installed
+  Dependencies : idris2
+                 contrib
+                 collie
+                 idrall
+
+lens
+  Brief        : Batteries-included profunctor optics
+  Type         : Git project
+  URL          : https://github.com/kiana-S/idris2-lens
+  Commit       : e1da48721e42e0f7cf1c425102a6542b702ec2bc
+  ipkg File    : lens.ipkg
+  Library      : not installed
+  Dependencies : profunctors
+
+linear
+  Type         : Idris core package
+  Library      : installed
+  Dependencies :
+
+log-domain
+  Brief        : A small representation of numerical computations in the log domain.
+  Type         : Git project
+  URL          : https://github.com/idris-bayes/log-domain
+  Commit       : 7eb33c36fb411b3e9dc43e0c5ad5d8f2f3dae80e
+  ipkg File    : log-domain.ipkg
+  Library      : not installed
+  Dependencies :
+
+lsp
+  Type         : Git project
+  URL          : https://github.com/idris-community/idris2-lsp
+  Commit       : 500f4a989c9583678230bf28a9f7b6a79f6be618
+  ipkg File    : lsp.ipkg
+  Library      : not installed
+  Executable   : idris2-lsp
+  App          : not installed
+  Dependencies : idris2
+                 contrib
+
+markdown
+  Brief        : A markdown parser for idris2
+  Type         : Git project
+  URL          : https://github.com/running-grass/idris2-markdown
+  Commit       : 38334267cbbe0ed067320d2e8bec36b08f475f5a
+  ipkg File    : markdown.ipkg
+  Library      : not installed
+  Dependencies : base
+                 contrib
+
+matrix
+  Brief        : Matrix operation library.
+  Type         : Git project
+  URL          : https://github.com/running-grass/idris2-playground
+  Commit       : 0dacfd81b49749d68a5fd905e95c860fdab072ab
+  ipkg File    : matrix/matrix.ipkg
+  Library      : not installed
+  Dependencies :
+
+mtl-tuple-impls
+  Brief        : Tuple instances for the standard MTL interfaces
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-mtl-tuple-impls
+  Commit       : 101fa0ccbd0fbfbe4807a6eb871b639740cbe6e8
+  ipkg File    : mtl-tuple-impls.ipkg
+  Test File    : tests/tests.ipkg
+  Library      : not installed
+  Dependencies :
+
+multiplate
+  Brief        : Generic traversals for mutually recursive data types
+  Type         : Git project
+  URL          : https://github.com/Z-snails/multiplate-idr
+  Commit       : 601d865f1fc74b783879b50d17ffd2a949def902
+  ipkg File    : multiplate.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies :
+
+network
+  Type         : Idris core package
+  Library      : installed
+  Dependencies : linear
+
+node
+  Brief        : Node JS API bindings for Idris2
+  Type         : Git project
+  URL          : https://github.com/kbertalan/idris2-node
+  Commit       : 917e6cb32b1ba6e171170b4d713acaff1fea79d6
+  ipkg File    : node.ipkg
+  Library      : not installed
+  Dependencies :
+
+pack
+  Brief        : A package manager for Idris2 with curated package collections
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-pack
+  Commit       : c52b9397a6a9e6fb6fc63000f9080df052d9f1ee
+  ipkg File    : pack.ipkg
+  Library      : not installed
+  Executable   : pack
+  App          : not installed
+  Dependencies : base
+                 contrib
+                 idris2
+                 toml
+                 filepath
+
+pack-admin
+  Brief        : Administration of pack's package collections
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-pack
+  Commit       : c52b9397a6a9e6fb6fc63000f9080df052d9f1ee
+  ipkg File    : pack-admin.ipkg
+  Library      : not installed
+  Executable   : pack-admin
+  App          : not installed
+  Dependencies : base
+                 contrib
+                 idris2
+                 toml
+                 filepath
+
+papers
+  Type         : Idris core package
+  Library      : not installed
+  Dependencies : contrib
+                 linear
+
+park_bench
+  Type         : Git project
+  URL          : https://github.com/Z-snails/park_bench
+  Commit       : c9a212e4873cc533dee361e1614189c95a56c873
+  ipkg File    : park_bench.ipkg
+  Library      : not installed
+  Dependencies :
+
+parser
+  Brief        : Types and utilities for writing total parsers and lexers
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-parser
+  Commit       : eb26b51140668f266f41588122ffbb0ac9c3bb54
+  ipkg File    : parser.ipkg
+  Test File    : test/test.ipkg
+  Library      : installed
+  Dependencies : elab-util
+
+parser-json
+  Brief        : Total and efficient parser and lexer for the JSON file format
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-parser
+  Commit       : eb26b51140668f266f41588122ffbb0ac9c3bb54
+  ipkg File    : json/parser-json.ipkg
+  Test File    : test/test.ipkg
+  Library      : installed
+  Dependencies : parser
+
+parser-show
+  Brief        : Parsing and pretty-printing regular Show output
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-parser
+  Commit       : eb26b51140668f266f41588122ffbb0ac9c3bb54
+  ipkg File    : show/parser-show.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : parser
+                 prettier
+
+parser-toml
+  Brief        : Total and efficient parser and lexer for the TOML config file language
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-parser
+  Commit       : eb26b51140668f266f41588122ffbb0ac9c3bb54
+  ipkg File    : toml/parser-toml.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : parser
+                 refined
+
+parser-tsv
+  Brief        : Efficient parser and marshallers for tab-separated values
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-parser
+  Commit       : eb26b51140668f266f41588122ffbb0ac9c3bb54
+  ipkg File    : tsv/parser-tsv.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : parser
+                 elab-util
+
+parser-webidl
+  Brief        : A total parser and lexer for the WebIDL interface description language
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-parser
+  Commit       : eb26b51140668f266f41588122ffbb0ac9c3bb54
+  ipkg File    : webidl/parser-webidl.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : parser
+                 refined
+                 sop
+
+pg-idris
+  Brief        : Postgres support for Idris 2 programs compiled with the Chez Scheme or NodeJS backends.
+  Type         : Git project
+  URL          : https://github.com/mattpolzin/pg-idris
+  Commit       : 75b931004f98043125754dfc84361c1fef2cf4b7
+  ipkg File    : pg-idris.ipkg
+  Library      : not installed
+  Dependencies : contrib
+                 indexed
+
+prelude
+  Type         : Idris core package
+  Library      : installed
+  Dependencies :
+
+prettier
+  Type         : Git project
+  URL          : https://github.com/Z-snails/prettier
+  Commit       : e82c3ce9f879aa239b532b1b5f4a2b7e25ca4541
+  ipkg File    : prettier.ipkg
+  Library      : not installed
+  Dependencies :
+
+prettier-ansi
+  Brief        : Colored terminal output for the Bernardy-style pretty printer
+  Type         : Git project
+  URL          : https://github.com/idris-community/idris2-ansi
+  Commit       : f3cac49b50561c0182ce2d7d9bdc4de8000f5a3e
+  ipkg File    : prettier/prettier-ansi.ipkg
+  Library      : not installed
+  Dependencies : ansi
+                 prettier
+
+pretty-show
+  Brief        : Pretty printing of values with a Show instance
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-pretty-show
+  Commit       : 7f2697de15c28ba2cdcaa09fd4733dcc8eb3c2a3
+  ipkg File    : pretty-show.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : elab-pretty
+                 elab-util
+                 parser-show
+
+prim
+  Brief        : Laws and utilities for working with primitives in Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-prim
+  Commit       : 80a7c46d5f40ea41f8662a3a601e3eb4a23beb60
+  ipkg File    : prim.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : base
+
+profiler
+  Brief        : A simple profiling utility for Idris 2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-profiler
+  Commit       : 7247cae9a8f4fb13e39e81dcae6f4a1e7c4c3d00
+  ipkg File    : profiler.ipkg
+  Library      : not installed
+  Dependencies : base
+                 refined
+
+profunctors
+  Brief        : Profunctors for Idris2
+  Type         : Git project
+  URL          : https://github.com/kiana-S/idris2-profunctors
+  Commit       : e862ef887f9dcdf90eacb1ca1c0a997d7a251135
+  ipkg File    : profunctors.ipkg
+  Library      : not installed
+  Dependencies :
+
+promise
+  Brief        : Promise for Idris2
+  Type         : Git project
+  URL          : https://github.com/kbertalan/idris2-promise
+  Commit       : 0b1716525ee10ed3a4f0d7132107c83e88f8eb99
+  ipkg File    : promise.ipkg
+  Library      : not installed
+  Dependencies : base
+
+quantifiers-extra
+  Brief        : Some additions to `Data.List.Quantifires`
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-quantifiers-extra
+  Commit       : 0bd29837979d8dba034766d197f0ac8c351b0c68
+  ipkg File    : quantifiers-extra.ipkg
+  Library      : installed
+  Dependencies : base
+
+random-pure
+  Brief        : Pure pseudo-random interface and splitmix implementation
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-random-pure
+  Commit       : f989b072731ae2e6f2dc8cd79537d2610465e059
+  ipkg File    : random-pure.ipkg
+  Test File    : tests/tests.ipkg
+  Library      : not installed
+  Dependencies : base
+
+refined
+  Brief        : Refinement types in Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-refined
+  Commit       : 4c7a684498f64f3da0ab7b0b92a1f3825cd60e86
+  ipkg File    : refined.ipkg
+  Library      : installed
+  Dependencies : elab-util
+                 algebra
+
+refined-json
+  Brief        : Deriving JSON marshallers for refinement types
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-refined
+  Commit       : 4c7a684498f64f3da0ab7b0b92a1f3825cd60e86
+  ipkg File    : json/refined-json.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : refined
+                 json-simple
+
+refined-tsv
+  Brief        : Deriving TSV marshallers for refinement types
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-refined
+  Commit       : 4c7a684498f64f3da0ab7b0b92a1f3825cd60e86
+  ipkg File    : tsv/refined-tsv.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies : refined
+                 parser-tsv
+
+rhone
+  Brief        : Arrowized functional reactive programming in Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-rhone
+  Commit       : 28ca640a75064fb2bb19869b1f647a958e3451df
+  ipkg File    : rhone.ipkg
+  Test File    : test/test.ipkg
+  Library      : installed
+  Dependencies : base
+                 quantifiers-extra
+
+rhone-js
+  Brief        : Reactive single page web applications in Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-rhone-js
+  Commit       : 2f4f80aa32d60142349672019e9186eea91bcf1e
+  ipkg File    : rhone-js.ipkg
+  Library      : installed
+  Dependencies : base
+                 dom
+                 rhone
+                 refined
+
+rio
+  Brief        : A simple effect system based on the RIO monad
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-rio
+  Commit       : 6969d06052a593b375e5d7aab2cbd02ad6a20112
+  ipkg File    : rio.ipkg
+  Test File    : test.ipkg
+  Library      : not installed
+  Dependencies : base
+                 ansi
+                 filepath
+                 quantifiers-extra
+
+snocvect
+  Type         : Git project
+  URL          : https://github.com/mattpolzin/idris-snocvect
+  Commit       : f6148c3d06c7a9989062a2425f925fc844468215
+  ipkg File    : snocvect.ipkg
+  Library      : not installed
+  Dependencies :
+
+sop
+  Brief        : Generic representation of data types as sums of products
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-sop
+  Commit       : 0726a1154b55ba0cefb885962a726c847b3d8d43
+  ipkg File    : sop.ipkg
+  Library      : installed
+  Dependencies : base
+                 elab-util
+
+string-builder
+  Brief        : Efficient string builders
+  Type         : Git project
+  URL          : https://github.com/Z-snails/string-builder
+  Commit       : 6dfb5e0070274ead1b8fd4e1229b5254da7ddd15
+  ipkg File    : string-builder.ipkg
+  Test File    : test/test.ipkg
+  Library      : not installed
+  Dependencies :
+
+summary-stat
+  Brief        : Facilities for summary statistics
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-summary-stat
+  Commit       : 412269d6e0d1c23419ee65923276363e94fd5ded
+  ipkg File    : summary-stat.ipkg
+  Test File    : tests/tests.ipkg
+  Library      : not installed
+  Dependencies : bounded-doubles
+                 contrib
+
+tailrec
+  Brief        : Provably total, stack-safe monadic recursion in Idris2
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-tailrec
+  Commit       : d3747284c7e80a711464ec4b1a7976bcf39dd6f2
+  ipkg File    : tailrec.ipkg
+  Library      : installed
+  Dependencies : base
+
+test
+  Type         : Idris core package
+  Library      : installed
+  Dependencies : contrib
+
+tester
+  Type         : Git project
+  URL          : https://github.com/cuddlefishie/tester-idr
+  Commit       : 3dcdb54ed578a14597a17cb93c926734a9da69ca
+  ipkg File    : tester.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+time-for-sleep
+  Brief        : Some time type + interfaces for getting time and sleeping
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-time-for-sleep
+  Commit       : 9b4bcd543c41f0d0bb6fda3e16c403e2c0708387
+  ipkg File    : time-for-sleep.ipkg
+  Test File    : tests/tests.ipkg
+  Library      : not installed
+  Dependencies :
+
+timeit
+  Brief        : Plain simple timing of actions for HasIO
+  Type         : Git project
+  URL          : https://github.com/MarcelineVQ/idris2-timeit
+  Commit       : 9566f71e9e7a68e8da4a30b8318f40099dda5c11
+  ipkg File    : timeit.ipkg
+  Library      : not installed
+  Dependencies : base
+
+tls
+  Brief        : A portable idris2 implementation of TLS
+  Type         : Git project
+  URL          : https://github.com/octeep/idris2-tls
+  Commit       : de160548212e743534514e14f21a86bcdea6ff9c
+  ipkg File    : tls.ipkg
+  Library      : not installed
+  Dependencies : base
+                 contrib
+                 network
+                 sop
+                 elab-util
+
+toml
+  Type         : Git project
+  URL          : https://github.com/cuddlefishie/toml-idr
+  Commit       : b4f5a4bd874fa32f20d02311a62a1910dc48123f
+  ipkg File    : toml.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+typelevel-emptiness-collections
+  Brief        : Collections with type-level control of emptiness, e.g. generalisation of List and List1
+  Type         : Git project
+  URL          : https://github.com/buzden/idris2-typelevel-emptiness-collections
+  Commit       : 9b044f9e393a15ab4b04e9f56dd9fec248a3cdd1
+  ipkg File    : typelevel-emptiness-collections.ipkg
+  Test File    : tests/tests.ipkg
+  Library      : not installed
+  Dependencies : if-unsolved-implicit
+                 contrib
+
+tyre
+  Brief        : A typed regex parser
+  Type         : Git project
+  URL          : https://github.com/kasiaMarek/TyRE
+  Commit       : d6d6f65f4e2d07db6ca1dacf23887b9e823688a9
+  ipkg File    : tyre.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+tyttp
+  Brief        : An experimental web server framework targeting NodeJS
+  Type         : Git project
+  URL          : https://github.com/kbertalan/tyttp
+  Commit       : 35e080bd2c81050920e03ded29e7807d8dfbbe23
+  ipkg File    : tyttp.ipkg
+  Library      : not installed
+  Dependencies : base
+                 apache-mime-types
+                 contrib
+                 promise
+
+tyttp-json
+  Brief        : JSON payload consumer and producer for TyTTP web framework
+  Type         : Git project
+  URL          : https://github.com/kbertalan/tyttp-json
+  Commit       : ecaf5306c8ec4186e932249435f48e16b0a75729
+  ipkg File    : tyttp-json.ipkg
+  Library      : not installed
+  Dependencies : tyttp
+                 promise
+                 contrib
+                 json
+                 sop
+                 elab-util
+                 apache-mime-types
+                 node
+
+uniplate
+  Type         : Git project
+  URL          : https://github.com/Z-snails/uniplate-idr
+  Commit       : caac354759a62a52596b6f77971327e17ff81c0f
+  ipkg File    : uniplate.ipkg
+  Library      : not installed
+  Dependencies :
+
+url
+  Brief        : A url library for idris2
+  Type         : Git project
+  URL          : https://github.com/running-grass/idris2-url
+  Commit       : 4587b14fbe7752c4aad5aac045e19088ec2e4108
+  ipkg File    : url.ipkg
+  Library      : not installed
+  Dependencies : base
+                 contrib
+
+webidl
+  Type         : Git project
+  URL          : https://github.com/stefan-hoeck/idris2-webidl
+  Commit       : 8087ea4a4a6b09fb54e8156c14a0c1789149ca1a
+  ipkg File    : webidl.ipkg
+  Library      : not installed
+  Executable   : generateDomBindings
+  App          : not installed
+  Dependencies : base
+                 parser-webidl
+                 prettier
+                 getopts
+
+xml
+  Type         : Git project
+  URL          : https://github.com/madman-bob/idris2-xml
+  Commit       : bfb02ff5c195218de7d33ed0ee9e6a26c60c0f0b
+  ipkg File    : xml.ipkg
+  Library      : not installed
+  Dependencies : contrib
+
+

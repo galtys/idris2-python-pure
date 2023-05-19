@@ -4,7 +4,7 @@ PACK_DIR="${PACK_DIR:-$HOME/.pack}"
 CLONES_DIR="/home/jan/github.com"
 
 #pushd "$CLONES/Idris2/libs/prelude""
-PYBACKEND="$CLONES_DIR/idris2-python-pure/build/exec/pybackend"
+PYBACKEND="pybackend"
 IDRIS_COMMIT="6b768f28b1aaaaca836e83014881ba72d613e568"
 
 pushd "$CLONES_DIR/Idris2/libs/prelude"
