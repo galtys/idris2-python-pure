@@ -23,6 +23,13 @@ try:
     import StringIO as str_io
 except:
     str_io = io
+
+def nullAnyPtr(a):
+    if a is Null:
+        return 0
+    else:
+        return 1
+    
 def pprint_obj(o):
     out = str_io.StringIO()
     pprint.pprint(o,stream=out)

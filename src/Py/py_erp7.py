@@ -53,3 +53,7 @@ def resolve_xid(env, model, xid):
 #ReturnTriple        
 def return_tuple(code, err, msg):
     return (code, err, msg)
+
+def read_one(m,f):
+    #print ["read_one", m, f]
+    return m[f]

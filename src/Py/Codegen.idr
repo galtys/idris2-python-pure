@@ -676,12 +676,13 @@ addForeign = [(fpName "Prelude.Types" "fastConcat", "pygen:lambda: lambda xs: fa
              ,(fpName "Prelude.Types" "fastUnpack", "pygen:lambda: lambda x:py_support_fastUnpack(x)")
              ,(fpName "Prelude.Types" "fastPack", "pygen:lambda: lambda x:py_support_fastPack(x)")
              ,(fpName "Prelude.IO" "prim__putStr", "pygen:lambda: lambda x,world:print_obj(x)")
-             ,(fpName "Prelude.PrimIO" "prim__nullAnyPtr", "pygen:lambda: lambda x:py_support_isNone(x)")
+             ,(fpName "PrimIO" "prim__nullAnyPtr", "pygen:lambda: lambda x:py_support_isNone(x)")
              ,(fpName "System.Errno" "prim__strerror", "pygen:lambda: lambda e: os.strerror(e)")
              ,(fpName "System.File.ReadWrite" "prim__writeLine", "pygen:lambda: lambda f,s,world: py_support_writeLine(f,s)")
              ,(fpName "System.File.Error" "prim__fileErrno", "pygen:lambda: errno.ENOENT")
              ,(fpName "System.File.Handle" "prim__open", "pygen:lambda: lambda f,m,world:open(f,m)")
-             ,(fpName "System.File.Handle" "prim__close", "pygen:lambda: lambda f,world:f.close()")]
+             ,(fpName "System.File.Handle" "prim__close", "pygen:lambda: lambda f,world:f.close()")
+             ]
              
 
 foreignDecl :  {auto d : Ref Ctxt Defs}
