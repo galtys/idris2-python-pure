@@ -58,7 +58,7 @@ def json2dict(o):
     return json.loads(o)
 
 def py_support_writeLine(f,s):
-    return f.write(s)
+    return f.write(s.encode('utf8') )
 
 def py_support_isNone(x):
     if x is None:

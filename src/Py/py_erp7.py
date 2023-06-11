@@ -57,3 +57,7 @@ def return_tuple(code, err, msg):
 def read_one(m,f):
     #print ["read_one", m, f]
     return m[f]
+
+def erp7_create(env, model, data):
+    #pprint.pprint(data)
+    return model.create( env['cr'], env['uid'], data)
