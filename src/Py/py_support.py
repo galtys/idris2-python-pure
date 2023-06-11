@@ -39,10 +39,10 @@ def pprint_obj(o):
     pprint.pprint(o,stream=out)
     return out.getvalue()
 def print_obj(o):
-    if isinstance(o, unicode):
-        sys.stdout.write(o.encode('utf8') )
+    if isinstance(o, str):
+        sys.stdout.write(o)        
     else:
-        sys.stdout.write(o)
+        sys.stdout.write(o.encode('utf8') )
 def is_py_none(x):
     if x is None:
         return 1
