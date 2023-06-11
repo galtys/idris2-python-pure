@@ -33,7 +33,11 @@ def nullAnyPtr(a):
         return 0
     else:
         return 1
-    
+
+def for_and_yield(xs, f):
+    for u in xs:
+        yield f(u)
+
 def pprint_obj(o):
     out = str_io.StringIO()
     pprint.pprint(o,stream=out)

@@ -2,7 +2,7 @@
 import sys
 import os
 server_path= '/home/jan/github.com/odoo14'
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit(100000)
 
 if os.path.isdir(server_path):
   try:
