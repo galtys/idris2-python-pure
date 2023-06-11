@@ -1239,6 +1239,11 @@ showFunctionArgs (MkFunction name args body) = do
           coreLift $ putStrLn $ show body
       False => pure ()
    -}
+
+export
+addSupport : List String -> List String
+addSupport xs = [ ("py/"++x++".py") | x <- xs ]   
+   
 ||| Compiles the given `ClosedTerm` for the list of supported
 ||| backends to JS code.
 export
@@ -1294,18 +1299,25 @@ compileToES c s cg tm ccTypes = do
       allDecls = fastUnlines $ foreigns ++ defDecls
 
   st <- get ESs
-
+  let add_supp = addSupport (nub directives)
   -- main preamble containing primops implementations
   static_preamble <- readDataFile ("py/py_support.py")
-  odoo14_preamble <- readDataFile ("py/py_odoo14.py") 
-  erp7_preamble <- readDataFile ("py/py_erp7.py")
+  
+  supp <- traverse readDataFile add_supp
+  --odoo14_preamble <- readDataFile ("py/py_odoo14.py") 
+  --erp7_preamble <- readDataFile ("py/py_erp7.py")
    
   run_main <- readDataFile ("py/run_main.py")
   --let static_preamble = ""
   -- complete preamble, including content from additional
   -- support files (if any)
-    
-  let pre = if ("odoo14" `elem` directives) then showSep "\n" $ odoo14_preamble::(static_preamble :: (values $ preamble st) ) else if ("erp7" `elem` directives) then showSep "\n" $ erp7_preamble::(static_preamble :: (values $ preamble st) )  else showSep "\n" $ (static_preamble :: (values $ preamble st) )
+  --coreLift $ putStrLn ("directives " ++ (show $ nub directives) )
+  
+  --let pre = if ("odoo14" `elem` directives) then showSep "\n" $ odoo14_preamble::(static_preamble :: (values $ preamble st) ) else if ("erp7" `elem` directives) then showSep "\n" $ erp7_preamble::(static_preamble :: (values $ preamble st) )  else showSep "\n" $ (static_preamble :: (values $ preamble st) )
+  
+  --let pre = if ("odoo14" `elem` directives) then showSep "\n" $ odoo14_preamble::(static_preamble :: (values $ preamble st) ) else if ("erp7" `elem` directives) then showSep "\n" $ erp7_preamble::(static_preamble :: (values $ preamble st) )  else showSep "\n" $ (static_preamble :: (values $ preamble st) )
+  
+  let pre = showSep "\n" $ supp ++ (static_preamble::(values $ preamble st))
   
   let after = showSep "\n" $ [run_main]
   --pure $ fastUnlines [pre,allDecls,main]
