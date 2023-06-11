@@ -682,8 +682,10 @@ addForeign = [(fpName "Prelude.Types" "fastConcat", "pygen:lambda: lambda xs: fa
              ,(fpName "System.File.Error" "prim__fileErrno", "pygen:lambda: errno.ENOENT")
              ,(fpName "System.File.Handle" "prim__open", "pygen:lambda: lambda f,m,world:open(f,m)")
              ,(fpName "System.File.Handle" "prim__close", "pygen:lambda: lambda f,world:f.close()")
+             ,(fpName "System" "prim__getArgCount", "pygen:lambda: lambda w:prim_getArgCount()")
+             ,(fpName "System" "prim__getArg", "pygen:lambda: lambda n,w:prim_getArg(n)")
              ]
-             
+
 
 foreignDecl :  {auto d : Ref Ctxt Defs}
             -> {auto c : Ref ESs ESSt}

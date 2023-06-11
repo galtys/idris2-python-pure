@@ -8,6 +8,10 @@ import io
 import sys
 import hashlib
 
+def prim_getArgCount():
+    return len(sys.argv)
+def prim_getArg(n):
+    return sys.argv[n]
 
 def get_sha256_hex(a):
     return hashlib.sha256(a).hexdigest()
