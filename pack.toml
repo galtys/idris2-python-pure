@@ -1,0 +1,4 @@
+[custom.all.pybackend]
+type = "local"
+path = "/home/jan/github.com/idris2-python-pure"
+ipkg = "py.ipkg"
