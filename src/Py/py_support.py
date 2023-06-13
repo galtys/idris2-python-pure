@@ -13,9 +13,6 @@ def prim_getArgCount():
 def prim_getArg(n):
     return sys.argv[n]
 
-def get_sha256_hex(a):
-    return hashlib.sha256(a).hexdigest()
-
 py_support_erased=None
 undefined=None
 UNIT=None
