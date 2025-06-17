@@ -78,8 +78,8 @@
             #  idris2
             #  idris2Lsp
             #];
-            inputsFrom = [ self.packagesIdris2.${system}.default.withSource
-                           self.packagesIdris2.${system}.py_doc.withSource idris2 idris2Lsp];
+            inputsFrom = [ self.packages.${system}.default.withSource
+                           self.packages.${system}.py_doc.withSource idris2 idris2Lsp];
           };
         }
       );
