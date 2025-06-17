@@ -60,7 +60,7 @@
           rec {
             idris2-python-pure = myPkgPy.executable;
             py_doc = myPkgPyDoc.library';
-            default = idris2-python-pure #myPkg.executable; # or myPkg.library'
+            default = idris2-python-pure; #myPkg.executable; # or myPkg.library'
           } 
       );
 
@@ -78,7 +78,8 @@
             #  idris2
             #  idris2Lsp
             #];
-            inputsFrom = [ self.packagesIdris2.${system}.default.withSource idris2 idris2Lsp];
+            inputsFrom = [ self.packagesIdris2.${system}.default.withSource
+                           self.packagesIdris2.${system}.py_doc.withSource idris2 idris2Lsp];
           };
         }
       );
