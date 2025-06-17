@@ -2,7 +2,7 @@ module Py.Doc
 
 import Data.List
 
-infixl 8 <++>
+export infixl 8 <++>
 
 public export
 data Doc

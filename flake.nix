@@ -45,14 +45,13 @@
           
           #myidris2f.propagatedIdrisLibraries=[];
           
-          
           myPkgPy = buildIdris {
             ipkgName = "py";
             version = "0.1.0";
             src = ./.;
              
             idrisLibraries = with idris2Packages; [
-               packdb.idris2 
+               packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop packdb.idris2 
             ];
           };
           myPkgPyDoc = buildIdris {
@@ -69,6 +68,7 @@
           rec {
             idris2-python-pure = myPkgPy.executable;
             py_doc = myPkgPyDoc.library';
+            
             default = idris2-python-pure; #myPkg.executable; # or myPkg.library'
           } 
       );
@@ -83,16 +83,16 @@
           ...
         }:
         rec {
-          #
+          #                   
           pysupport =
             import ./py_support.nix {stdenv=pkgs.stdenv;};
           
           default = pkgs.mkShell {
             shellHook=''
-                   IDRIS2_LIBS=${pysupport.out}
-                   IDRIS2_PREFIX=.idris2
+                   export IDRIS2_PREFIX=.idris2
+                   export IDRIS2_LIBS=${pysupport.out}  
                    IDR2_PTH=${myidris2f.out}/idris2-0.7.0
-                   IDRIS2_PACKAGE_PATH=$IDRIS2_PACKAGE_PATH:$IDR2_PTH
+                   export IDRIS2_PACKAGE_PATH=$IDRIS2_PACKAGE_PATH:$IDR2_PTH
             '';
             packages = [
               idris2
