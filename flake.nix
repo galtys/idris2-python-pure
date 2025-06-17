@@ -44,6 +44,14 @@
           mydb=builtins.fromJSON (builtins.readFile ./pkgs.json);
           
           #myidris2f.propagatedIdrisLibraries=[];
+          myPkgPyDoc = buildIdris {
+            ipkgName = "py_doc";
+            version = "0.1.0";            
+            src = ./.;
+            idrisLibraries = with idris2Packages; [
+              packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop  packdb.idris2  #idris2f.packages.${system}.idris2.
+            ];
+          };
           
           myPkgPy = buildIdris {
             ipkgName = "py";
@@ -51,15 +59,7 @@
             src = ./.;
              
             idrisLibraries = with idris2Packages; [
-               packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop packdb.idris2 
-            ];
-          };
-          myPkgPyDoc = buildIdris {
-            ipkgName = "py_doc";
-            version = "0.1.0";            
-            src = ./.;
-            idrisLibraries = with idris2Packages; [
-              packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop  packdb.idris2  #idris2f.packages.${system}.idris2.
+               packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop packdb.idris2  myPkgPyDoc
             ];
           };
 
