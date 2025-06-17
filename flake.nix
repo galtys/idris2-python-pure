@@ -20,6 +20,7 @@
     }:
     let
       lib = nixpkgs.lib;
+      
       forEachSystem =
         f:
         lib.genAttrs lib.systems.flakeExposed (
@@ -29,29 +30,37 @@
             inherit (packageset.packages.${system}) idris2 idris2Lsp buildIdris buildIdris' idris2Packages;
             pkgs = nixpkgs.legacyPackages.${system};
             inherit idris2f;
+            myidris2f = idris2f.packages.${system}.default;
           }
         );
     in
     {
       packages = forEachSystem (
-        { buildIdris, idris2Packages,idris2,system,... }:
+        { buildIdris, idris2Packages,myidris2f,system,... }:
         let
           # if you have 'allow-import-from-derivation' set true then you could
           # also use buildIdris' here and not specify `idrisLibraries`
           # explicitly.
           mydb=builtins.fromJSON (builtins.readFile ./pkgs.json);
+          
+          #myidris2f.propagatedIdrisLibraries=[];
+          
+          
           myPkgPy = buildIdris {
             ipkgName = "py";
+            version = "0.1.0";
             src = ./.;
+             
             idrisLibraries = with idris2Packages; [
-              packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop  packdb.idris2 #idris2f.packages.${system}.idris2.
+               packdb.idris2 
             ];
           };
           myPkgPyDoc = buildIdris {
             ipkgName = "py_doc";
+            version = "0.1.0";            
             src = ./.;
             idrisLibraries = with idris2Packages; [
-              packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop  packdb.idris2 #idris2f.packages.${system}.idris2.
+              packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop  packdb.idris2  #idris2f.packages.${system}.idris2.
             ];
           };
 
@@ -70,16 +79,23 @@
           pkgs,
           idris2,
           idris2Lsp,
+          myidris2f,
           ...
         }:
         {
           default = pkgs.mkShell {
-            #packages = [
-            #  idris2
-            #  idris2Lsp
-            #];
+            shellHook=''
+                   IDRIS2_PREFIX=.idris2
+                   IDR2_PTH=${myidris2f.out}/idris2-0.7.0
+                   IDRIS2_PACKAGE_PATH=$IDRIS2_PACKAGE_PATH:$IDR2_PTH
+            '';
+            packages = [
+              idris2
+              idris2Lsp
+              pkgs.gnumake
+            ];
             inputsFrom = [ self.packages.${system}.default.withSource
-                           self.packages.${system}.py_doc.withSource idris2 idris2Lsp];
+                           self.packages.${system}.py_doc.withSource];
           };
         }
       );
