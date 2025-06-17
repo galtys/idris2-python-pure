@@ -82,9 +82,14 @@
           myidris2f,
           ...
         }:
-        {
+        rec {
+          #
+          pysupport =
+            import ./py_support.nix {stdenv=pkgs.stdenv;};
+          
           default = pkgs.mkShell {
             shellHook=''
+                   IDRIS2_LIBS=${pysupport.out}
                    IDRIS2_PREFIX=.idris2
                    IDR2_PTH=${myidris2f.out}/idris2-0.7.0
                    IDRIS2_PACKAGE_PATH=$IDRIS2_PACKAGE_PATH:$IDR2_PTH
