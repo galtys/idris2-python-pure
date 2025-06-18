@@ -63,12 +63,23 @@
             ];
           };
 
+          myPkgIdris2 = buildIdris {
+            ipkgName = "idris2";
+            version = "0.7.0";
+            src = ./.;
+             
+            idrisLibraries = with idris2Packages; [
+               packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop packdb.idris2  myPkgPyDoc
+            ];
+          };
+          
+
           
         in
           rec {
             idris2-python-pure = myPkgPy.executable;
             py_doc = myPkgPyDoc.library';
-            idris2 = myidris2f;
+            idris2 = myPkgIdris2.executable;
             default = idris2-python-pure; #myPkg.executable; # or myPkg.library'
           } 
       );
