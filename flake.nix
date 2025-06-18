@@ -129,6 +129,7 @@
             # '';
             packages = [
               idris2
+              self.packages.${system}.default
               idris2Lsp
               pkgs.gnumake
             ];
