@@ -36,7 +36,7 @@
     in
     {
       packages = forEachSystem (
-        { buildIdris, idris2Packages,myidris2f,system,... }:
+        { buildIdris, idris2Packages,idris2,myidris2f,pkgs,system,... }:
         let
           # if you have 'allow-import-from-derivation' set true then you could
           # also use buildIdris' here and not specify `idrisLibraries`
@@ -52,6 +52,20 @@
               packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop  packdb.idris2  #idris2f.packages.${system}.idris2.
             ];
           };
+
+
+          pysupport =
+            import ./py_support.nix {stdenv=pkgs.stdenv;};
+
+          name = "${idris2.pname}-${idris2.version}";
+          globalLibraries = [
+            "\\$HOME/.nix-profile/lib/${name}"
+            "/run/current-system/sw/lib/${name}"
+            "${idris2}/${name}"
+          ];
+          globalLibrariesPath = builtins.concatStringsSep ":" globalLibraries;
+          supportLibrariesPath = lib.makeLibraryPath [ pysupport ];
+          supportSharePath = lib.makeSearchPath "share" [ pysupport ];
           
           myPkgPy = buildIdris {
             ipkgName = "idris2-python-pure";
@@ -59,8 +73,16 @@
             src = ./.;
              
             idrisLibraries = with idris2Packages; [
-               packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop packdb.idris2  myPkgPyDoc
+              packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop packdb.idris2  myPkgPyDoc
             ];
+            postFixup = ''
+                wrapProgram $out/bin/idris2-python-pure \
+                  --run 'export IDRIS2_PREFIX=''${IDRIS2_PREFIX-"$HOME/.idris2"}' \
+                  --suffix IDRIS2_LIBS ':' "${supportLibrariesPath}" \
+                  --suffix IDRIS2_DATA ':' "${supportSharePath}" \
+                  --suffix IDRIS2_PACKAGE_PATH ':' "${globalLibrariesPath}" \
+            '';  
+            
           };
 
           myPkgIdris2 = buildIdris {
@@ -76,11 +98,11 @@
 
           
         in
-          rec {
+          {
             idris2-python-pure = myPkgPy.executable;
             py_doc = myPkgPyDoc.library';
             idris2 = myPkgIdris2.executable;
-            default = idris2-python-pure; #myPkg.executable; # or myPkg.library'
+            default = myPkgPy.executable; #myPkg.executable; # or myPkg.library'
           } 
       );
 
@@ -95,16 +117,16 @@
         }:
         rec {
           #                   
-          pysupport =
-            import ./py_support.nix {stdenv=pkgs.stdenv;};
+          #pysupport =
+          #  import ./py_support.nix {stdenv=pkgs.stdenv;};
           
           default = pkgs.mkShell {
-            shellHook=''
-                   export IDRIS2_PREFIX=.idris2
-                   export IDRIS2_LIBS=${pysupport.out}  
-                   IDR2_PTH=${myidris2f.out}/idris2-0.7.0
-                   export IDRIS2_PACKAGE_PATH=$IDRIS2_PACKAGE_PATH:$IDR2_PTH
-            '';
+            # shellHook=''
+            #        export IDRIS2_PREFIX=.idris2
+            #        export IDRIS2_LIBS=${pysupport.out}  
+            #        IDR2_PTH=${myidris2f.out}/idris2-0.7.0
+            #        export IDRIS2_PACKAGE_PATH=$IDRIS2_PACKAGE_PATH:$IDR2_PTH
+            # '';
             packages = [
               idris2
               idris2Lsp
