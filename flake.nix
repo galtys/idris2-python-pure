@@ -132,7 +132,7 @@
               self.packages.${system}.default
               idris2Lsp
               pkgs.gnumake
-            ];
+            ]; #executables available in the dev shell
             inputsFrom = [ self.packages.${system}.default.withSource
                            self.packages.${system}.py_doc.withSource];
           };
