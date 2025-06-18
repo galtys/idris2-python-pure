@@ -1,4 +1,4 @@
-package pybackend
+package idris2-python-pure
 version = 0.1.0
 authors = "galtys"
 -- maintainers =
@@ -26,5 +26,5 @@ modules = PyMain
 main = PyMain
 
 -- name of executable
-executable = pybackend
+executable = idris2-python-pure
 

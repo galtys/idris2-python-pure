@@ -54,7 +54,7 @@
           };
           
           myPkgPy = buildIdris {
-            ipkgName = "py";
+            ipkgName = "idris2-python-pure";
             version = "0.1.0";
             src = ./.;
              
@@ -68,7 +68,7 @@
           rec {
             idris2-python-pure = myPkgPy.executable;
             py_doc = myPkgPyDoc.library';
-            
+            idris2 = myidris2f;
             default = idris2-python-pure; #myPkg.executable; # or myPkg.library'
           } 
       );
