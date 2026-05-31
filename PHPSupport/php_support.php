@@ -144,6 +144,9 @@ function __prim_stringIteratorNext($str, $it)              { return null; }
 function _truncInt8($x)   { $r = (int)$x & 0xff;               return ($r >= 0x80)   ? $r - 0x100             : $r; }
 function _truncInt16($x)  { $r = (int)$x & 0xffff;             return ($r >= 0x8000) ? $r - 0x10000           : $r; }
 function _truncInt32($x)  { return (int)$x & 0xffffffff; }
+function _truncBigInt8($x)  { return _truncInt8($x); }
+function _truncBigInt16($x) { return _truncInt16($x); }
+function _truncBigInt32($x) { return _truncInt32($x); }
 function _truncBigInt64($x){ $r = (int)$x; return $r; }
 
 function _truncUInt8($x)  { return (int)$x & 0xff; }

@@ -2,7 +2,7 @@
                               version="0.0.0";
                               phases = [ "unpackPhase" "installPhase" ];
                               installPhase = ''
-                                mkdir -p $out
-                                cp $src/* $out
+                                mkdir -p $out/share/php
+                                cp $src/* $out/share/php
                               '';
                               src=./PHPSupport;}

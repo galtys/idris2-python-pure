@@ -57,6 +57,9 @@
           pysupport =
             import ./py_support.nix {stdenv=pkgs.stdenv;};
 
+          phpsupport =
+            import ./php_support.nix {stdenv=pkgs.stdenv;};
+
           name = "${idris2.pname}-${idris2.version}";
           globalLibraries = [
             "\\$HOME/.nix-profile/lib/${name}"
@@ -66,6 +69,8 @@
           globalLibrariesPath = builtins.concatStringsSep ":" globalLibraries;
           supportLibrariesPath = lib.makeLibraryPath [ pysupport ];
           supportSharePath = lib.makeSearchPath "share" [ pysupport ];
+          phpSupportLibrariesPath = lib.makeLibraryPath [ phpsupport ];
+          phpSupportSharePath = lib.makeSearchPath "share" [ phpsupport ];
           
           myPkgPy = buildIdris {
             ipkgName = "idris2-python-pure";
@@ -85,6 +90,23 @@
             
           };
 
+          myPkgPhp = buildIdris {
+            ipkgName = "idris2-php8";
+            version = "0.1.0";
+            src = ./.;
+
+            idrisLibraries = with idris2Packages; [
+              packdb.ncurses-idris packdb.rhone-js packdb.json packdb.tailrec packdb.sop packdb.idris2  myPkgPyDoc
+            ];
+            postFixup = ''
+                wrapProgram $out/bin/idris2-php8 \
+                  --run 'export IDRIS2_PREFIX=''${IDRIS2_PREFIX-"$HOME/.idris2"}' \
+                  --suffix IDRIS2_LIBS ':' "${phpSupportLibrariesPath}" \
+                  --suffix IDRIS2_DATA ':' "${phpSupportSharePath}" \
+                  --suffix IDRIS2_PACKAGE_PATH ':' "${globalLibrariesPath}" \
+            '';
+          };
+
           myPkgIdris2 = buildIdris {
             ipkgName = "idris2";
             version = "0.7.0";
@@ -100,6 +122,7 @@
         in
           {
             idris2-python-pure = myPkgPy.executable;
+            idris2-php8 = myPkgPhp.executable;
             py_doc = myPkgPyDoc.library';
             idris2 = myPkgIdris2.executable;
             default = myPkgPy.executable; #myPkg.executable; # or myPkg.library'
@@ -130,6 +153,7 @@
             packages = [
               idris2
               self.packages.${system}.default
+              self.packages.${system}.idris2-php8
               idris2Lsp
               pkgs.gnumake
             ]; #executables available in the dev shell

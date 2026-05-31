@@ -267,7 +267,7 @@ boundedUIntOp : Int -> String -> Doc -> Doc -> Doc
 boundedUIntOp = boundedOp "u"
 
 boolOp : (op : String) -> (lhs : Doc) -> (rhs : Doc) -> Doc
-boolOp o lhs rhs = "(" <+> binOp o lhs rhs <+> ")"
+boolOp o lhs rhs = "((" <+> binOp o lhs rhs <+> ") ? 1 : 0)"
 
 phpPrimType : PrimType -> String
 phpPrimType _ = "#t"
@@ -726,15 +726,15 @@ mutual
     as <- traverse (map (insertBreak r) . alt) alts
     d  <- traverseOpt stmt def
     nm <- get NoMangleMap
-    pure (phpSwitch (phpMinimal nm sc <+> "['h_x']") as d)
+    pure (phpSwitch (paren (phpMinimal nm sc <+> "['h_x']" <+> "?? null")) as d)
     where
       alt : {r : _} -> EConAlt r -> Core (Doc, Doc)
-      alt (MkEConAlt _ RECORD b)  = ("\"undefined\"",) <$> stmt b
+      alt (MkEConAlt _ RECORD b)  = ("null",) <$> stmt b
       alt (MkEConAlt _ NIL    b)  = ("0",) <$> stmt b
-      alt (MkEConAlt _ CONS   b)  = ("\"undefined\"",) <$> stmt b
+      alt (MkEConAlt _ CONS   b)  = ("null",) <$> stmt b
       alt (MkEConAlt _ NOTHING b) = ("0",) <$> stmt b
-      alt (MkEConAlt _ JUST   b)  = ("\"undefined\"",) <$> stmt b
-      alt (MkEConAlt _ UNIT   b)  = ("\"undefined\"",) <$> stmt b
+      alt (MkEConAlt _ JUST   b)  = ("null",) <$> stmt b
+      alt (MkEConAlt _ UNIT   b)  = ("null",) <$> stmt b
       alt (MkEConAlt t _ b)       = (tag2es t,) <$> stmt b
 
   stmt (ConstSwitch r sc alts def) = do
