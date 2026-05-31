@@ -1,0 +1,11 @@
+package test-chez
+version = 0.1.0
+authors = "galtys"
+
+sourcedir = "."
+
+depends = base >= 0.5.1
+        , contrib >= 0.5.1
+
+main = TestAll
+executable = "test_all"
