@@ -1,0 +1,19 @@
+package idris2-php8
+version = 0.1.0
+authors = "galtys"
+
+sourcedir = "src"
+
+depends = base >= 0.5.1
+        , contrib >= 0.5.1
+        , idris2
+
+modules = PHP.Codegen
+        , Py.Ast
+        , Py.Doc
+        , Py.State
+        , Py.ToAst
+
+main = PHPMain
+
+executable = idris2-php8
