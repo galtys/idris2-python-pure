@@ -31,7 +31,7 @@ function assert_test(string $label, $expected, $actual): void {
 }
 
 // Test factorial
-$fn = $GLOBALS['TestAll_factorial'] ?? null;
+$fn = $GLOBALS['libFactorial'] ?? null;
 if ($fn) {
     $result = $fn(5);
     echo "factorial(5) = $result\n";
@@ -41,7 +41,7 @@ if ($fn) {
 }
 
 // Test fibonacci
-$fn = $GLOBALS['TestAll_fibonacci'] ?? null;
+$fn = $GLOBALS['libFibonacci'] ?? null;
 if ($fn) {
     $result = $fn(10);
     echo "fibonacci(10) = $result\n";
@@ -51,7 +51,7 @@ if ($fn) {
 }
 
 // Test isPalindrome
-$fn = $GLOBALS['TestAll_isPalindrome'] ?? null;
+$fn = $GLOBALS['libIsPalindrome'] ?? null;
 if ($fn) {
     $r1 = $fn("racecar");
     $r2 = $fn("hello");
@@ -64,7 +64,7 @@ if ($fn) {
 }
 
 // Test makeAdder (closure — validates PHP use() capture)
-$fn = $GLOBALS['TestAll_makeAdder'] ?? null;
+$fn = $GLOBALS['libMakeAdder'] ?? null;
 if ($fn) {
     $result = $fn(5, 10);
     echo "makeAdder(5, 10) = $result\n";

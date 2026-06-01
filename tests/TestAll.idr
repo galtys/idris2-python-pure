@@ -263,29 +263,41 @@ testTailRec = do
 --          Library exports (callable from Python/PHP)
 --------------------------------------------------------------------------------
 
-export
+%export "pygen:libFactorial"
+        "php8:libFactorial"
+        "javascript:libFactorial"
 libFactorial : Int -> Int
-libFactorial = factorial
+libFactorial n = factorial n
 
-export
+%export "pygen:libFibonacci"
+        "php8:libFibonacci"
+        "javascript:libFibonacci"
 libFibonacci : Int -> Int
-libFibonacci = fibonacci
+libFibonacci n = fibonacci n
 
-export
+%export "pygen:libReverse"
+        "php8:libReverse"
+        "javascript:libReverse"
 libReverse : String -> String
-libReverse = reverse
+libReverse s = reverse s
 
-export
+%export "pygen:libIsPalindrome"
+        "php8:libIsPalindrome"
+        "javascript:libIsPalindrome"
 libIsPalindrome : String -> Bool
-libIsPalindrome = isPalindrome
+libIsPalindrome s = isPalindrome s
 
-export
+%export "pygen:libSum"
+        "php8:libSum"
+        "javascript:libSum"
 libSum : List Int -> Int
-libSum = TestAll.sum'
+libSum xs = TestAll.sum' xs
 
-export
+%export "pygen:libMakeAdder"
+        "php8:libMakeAdder"
+        "javascript:libMakeAdder"
 libMakeAdder : Int -> Int -> Int
-libMakeAdder = makeAdder
+libMakeAdder n x = makeAdder n x
 
 --------------------------------------------------------------------------------
 --          Main

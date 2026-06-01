@@ -26,7 +26,7 @@ with open(generated_file) as f:
 print("=== Python Library Import Test ===\n")
 
 # Test factorial
-fn = ns.get("TestAll_factorial")
+fn = ns.get("libFactorial")
 if fn:
     result = fn(5)
     print("factorial(5) = %s" % result)
@@ -36,7 +36,7 @@ else:
     print("  SKIP: factorial not found")
 
 # Test fibonacci
-fn = ns.get("TestAll_fibonacci")
+fn = ns.get("libFibonacci")
 if fn:
     result = fn(10)
     print("fibonacci(10) = %s" % result)
@@ -46,7 +46,7 @@ else:
     print("  SKIP: fibonacci not found")
 
 # Test reverse
-fn = ns.get("TestAll_isPalindrome")
+fn = ns.get("libIsPalindrome")
 if fn:
     r1 = fn("racecar")
     r2 = fn("hello")
@@ -59,7 +59,7 @@ else:
     print("  SKIP: isPalindrome not found")
 
 # Test makeAdder (closure)
-fn = ns.get("TestAll_makeAdder")
+fn = ns.get("libMakeAdder")
 if fn:
     result = fn(5, 10)
     print("makeAdder(5, 10) = %s" % result)
