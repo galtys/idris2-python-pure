@@ -1,0 +1,20 @@
+package idris2-all
+version = 0.1.0
+authors = "galtys"
+
+sourcedir = "src"
+
+depends = base >= 0.5.1
+        , contrib >= 0.5.1
+        , idris2
+
+modules = Py.Codegen
+        , Py.Ast
+        , Py.Doc
+        , Py.State
+        , Py.ToAst
+        , PHP.Codegen
+
+main = AllMain
+
+executable = idris2-all
