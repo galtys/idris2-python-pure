@@ -143,7 +143,7 @@ def _crashExp(x):
     raise x#(ValueError x)
 
 def _bigIntOfString(s):
-    return long(s)
+    return int(s)
 
 def _numberOfString(s):
     return float(s)
