@@ -68,6 +68,10 @@ block b = concat [Nest 2 (LineBreak <+> b), LineBreak]
 --block b = concat ["{", Nest 1 (LineBreak <+> b), LineBreak, "}"]
 
 export
+block3 : Doc -> Doc
+block3 b = Nest 3 (LineBreak <+> b)
+
+export
 paren : Doc -> Doc
 paren d = "(" <+> d <+> ")"
 --export
